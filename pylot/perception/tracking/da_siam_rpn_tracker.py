@@ -1,8 +1,7 @@
 from DaSiamRPN.code.net import SiamRPNvot
 from DaSiamRPN.code.run_SiamRPN import SiamRPN_init, SiamRPN_track
 
-from lapsolver import solve_dense
-
+from scipy.optimize import linear_sum_assignment
 import numpy as np
 
 from pylot.perception.detection.obstacle import Obstacle
@@ -104,7 +103,15 @@ class MultiObjectDaSiamRPNTracker(MultiObjectTracker):
         # Create matrix of similarities between detection and tracker bboxes.
         cost_matrix = self._create_hungarian_cost_matrix(obstacles)
         # Run linear assignment (Hungarian Algo) with matrix.
-        row_ids, col_ids = solve_dense(cost_matrix)
+        cost_matrix_scipy = np.where(np.isnan(cost_matrix), 1000.0, cost_matrix)
+        row_ids, col_ids = linear_sum_assignment(cost_matrix_scipy)
+        
+        valid_matches = [(r, c) for r, c in zip(row_ids, col_ids) if not np.isnan(cost_matrix[r, c])]
+        if valid_matches:
+            row_ids, col_ids = zip(*valid_matches)
+        else:
+            row_ids, col_ids = [], []
+
         matched_map = {}
         for row_id, col_id in zip(row_ids, col_ids):
             matched_map[self._trackers[col_id].obstacle.id] = row_id

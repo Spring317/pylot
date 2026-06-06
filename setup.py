@@ -14,7 +14,9 @@ setup(
         "absl-py",
         "cvxpy",
         "erdos>=0.3.1",
-        "lapsolver",
+        "gdown",
+        "mmcv==1.3.10",
+        "mmdet==2.14.0",
         "motmetrics",
         "numpy<1.20",  # Update once TF supports a newer version.
         "open3d==0.13.0",

@@ -33,21 +33,11 @@ fi
 # Create the conda environment if it doesn't exist
 if ! conda env list | grep -qw "$CONDA_ENV_NAME"; then
     echo "=== Creating conda environment '${CONDA_ENV_NAME}' ==="
-    conda create -n "$CONDA_ENV_NAME" -y \
-        python=3.8 \
-        cmake \
-        make \
-        gcc_linux-64 \
-        gxx_linux-64 \
-        libpng \
-        geos \
-        llvmdev \
-        git \
-        wget \
-        unzip \
-        tk
+    conda env create -f "${PYLOT_HOME}/environment.yml"
 else
     echo "=== Conda environment '${CONDA_ENV_NAME}' already exists ==="
+    echo "=== Updating conda environment '${CONDA_ENV_NAME}' ==="
+    conda env update -f "${PYLOT_HOME}/environment.yml"
 fi
 
 # Activate the conda environment
@@ -55,14 +45,6 @@ eval "$(conda shell.bash hook)"
 conda activate "$CONDA_ENV_NAME"
 echo "INFO: Using python at $(which python3) ($(python3 --version))"
 echo "INFO: Using cmake at $(which cmake) ($(cmake --version | head -1))"
-
-###############################################################################
-# Upgrade pip and install Python dependencies
-###############################################################################
-echo "=== Installing Python dependencies ==="
-python3 -m pip install --upgrade pip setuptools wheel
-python3 -m pip install gdown
-python3 -m pip install -r "${PYLOT_HOME}/requirements.txt"
 
 ###############################################################################
 # Get models & code bases we depend on
@@ -155,7 +137,6 @@ if [ ! -d "qdtrack" ]; then
     git clone https://github.com/mageofboy/qdtrack.git
 fi
 cd "$PYLOT_HOME/dependencies/qdtrack"
-python3 -m pip install mmcv==1.3.10 mmdet==2.14.0
 python3 -m pip install -e ./
 
 ##### Download the Lanenet code #####
