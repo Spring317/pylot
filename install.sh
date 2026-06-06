@@ -9,43 +9,58 @@ else
 fi
 
 ###############################################################################
-# Prerequisites check
+# Conda environment setup
 ###############################################################################
-# The following system libraries are expected to be available on the cluster
-# (e.g. via `module load` or pre-installed). The script will warn if key
-# binaries are missing but will NOT attempt to install them.
-echo "=== Checking prerequisites ==="
-for cmd in git wget cmake unzip python3; do
-    if ! command -v "$cmd" &> /dev/null; then
-        echo "ERROR: '$cmd' is not available. Please install or 'module load' it before running this script."
-        exit 1
-    fi
-done
-echo "All required binaries found."
+# Conda provides python, cmake, compilers, llvm, and system libraries
+# all without sudo — perfect for HPC clusters.
+###############################################################################
 
-###############################################################################
-# Create and activate a Python virtual environment
-###############################################################################
-VENV_DIR="${PYLOT_HOME}/venv"
+CONDA_ENV_NAME="pylot"
 
-if [ ! -d "$VENV_DIR" ]; then
-    echo "=== Creating Python venv at ${VENV_DIR} ==="
-    python3 -m venv "$VENV_DIR"
-else
-    echo "=== Reusing existing venv at ${VENV_DIR} ==="
+# Check that conda is available
+if ! command -v conda &> /dev/null; then
+    echo "ERROR: 'conda' is not available."
+    echo "Install Miniconda (no sudo needed) from:"
+    echo "  https://docs.conda.io/en/latest/miniconda.html"
+    echo ""
+    echo "Quick install:"
+    echo "  wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+    echo "  bash Miniconda3-latest-Linux-x86_64.sh -b -p \$HOME/miniconda3"
+    echo "  eval \"\$(\$HOME/miniconda3/bin/conda shell.bash hook)\""
+    exit 1
 fi
 
-# Activate the venv — all pip installs below go into it
-source "${VENV_DIR}/bin/activate"
-echo "INFO: Using python at $(which python3) ($(python3 --version))"
+# Create the conda environment if it doesn't exist
+if ! conda env list | grep -qw "$CONDA_ENV_NAME"; then
+    echo "=== Creating conda environment '${CONDA_ENV_NAME}' ==="
+    conda create -n "$CONDA_ENV_NAME" -y \
+        python=3.8 \
+        cmake \
+        make \
+        gcc_linux-64 \
+        gxx_linux-64 \
+        libpng \
+        geos \
+        llvmdev \
+        git \
+        wget \
+        unzip \
+        tk
+else
+    echo "=== Conda environment '${CONDA_ENV_NAME}' already exists ==="
+fi
 
-# Upgrade pip inside the venv
-python3 -m pip install --upgrade pip setuptools wheel
+# Activate the conda environment
+eval "$(conda shell.bash hook)"
+conda activate "$CONDA_ENV_NAME"
+echo "INFO: Using python at $(which python3) ($(python3 --version))"
+echo "INFO: Using cmake at $(which cmake) ($(cmake --version | head -1))"
 
 ###############################################################################
-# Install Python dependencies into the venv
+# Upgrade pip and install Python dependencies
 ###############################################################################
 echo "=== Installing Python dependencies ==="
+python3 -m pip install --upgrade pip setuptools wheel
 python3 -m pip install gdown
 python3 -m pip install -r "${PYLOT_HOME}/requirements.txt"
 
@@ -57,8 +72,12 @@ cd "$PYLOT_HOME/dependencies/"
 ###### Download the model weights ######
 echo "[x] Downloading all model weights..."
 cd "$PYLOT_HOME/dependencies/"
-gdown https://drive.google.com/uc?id=1rQKFDxGDFi3rBLsMrJzb7oGZvvtwgyiL
-unzip models.zip ; rm models.zip
+if [ ! -d "models" ] || [ -z "$(ls -A models 2>/dev/null)" ]; then
+    gdown https://drive.google.com/uc?id=1rQKFDxGDFi3rBLsMrJzb7oGZvvtwgyiL
+    unzip models.zip ; rm models.zip
+else
+    echo "    models/ already exists, skipping download."
+fi
 
 #################### Download the code bases ####################
 echo "[x] Compiling the planners..."
@@ -121,11 +140,9 @@ if [ ! -d "CenterTrack" ]; then
     cd CenterTrack/src/lib/model/networks/
     git clone https://github.com/CharlesShang/DCNv2/
     cd DCNv2
-    # Set LLVM_CONFIG if llvm-config is available under a versioned name
+    # llvmdev from conda provides llvm-config
     if command -v llvm-config &> /dev/null; then
         export LLVM_CONFIG=$(which llvm-config)
-    elif command -v llvm-config-9 &> /dev/null; then
-        export LLVM_CONFIG=$(which llvm-config-9)
     else
         echo "WARNING: llvm-config not found; DCNv2 build may fail."
     fi
@@ -180,6 +197,6 @@ fi
 echo ""
 echo "========================================"
 echo " Installation complete!"
-echo " To use pylot, activate the venv first:"
-echo "   source ${VENV_DIR}/bin/activate"
+echo " To use pylot, activate the conda env:"
+echo "   conda activate ${CONDA_ENV_NAME}"
 echo "========================================"
