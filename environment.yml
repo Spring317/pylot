@@ -12,6 +12,8 @@ dependencies:
   - libpng
   - geos
   - llvmdev
+  - eigen
+  - qt
   - git
   - wget
   - unzip

@@ -64,14 +64,27 @@ fi
 #################### Download the code bases ####################
 echo "[x] Compiling the planners..."
 
+# Helper: build a planner with cmake using conda-provided deps (no sudo).
+# The upstream build.sh scripts call `sudo apt-get install` which fails on
+# HPC clusters. We skip them and run cmake directly.
+build_planner() {
+    local planner_dir="$1"
+    cd "$planner_dir"
+    mkdir -p build
+    cd build
+    cmake .. \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_PREFIX_PATH="$CONDA_PREFIX"
+    cmake --build . --target all -- -j 8
+}
+
 ###### Build the FrenetOptimalTrajectory Planner ######
 echo "[x] Compiling the Frenet Optimal Trajectory planner..."
 cd "$PYLOT_HOME/dependencies/"
 if [ ! -d "frenet_optimal_trajectory_planner" ]; then
     git clone https://github.com/erdos-project/frenet_optimal_trajectory_planner.git
 fi
-cd frenet_optimal_trajectory_planner/
-bash build.sh
+build_planner "$PYLOT_HOME/dependencies/frenet_optimal_trajectory_planner"
 
 ###### Build the RRT* Planner ######
 echo "[x] Compiling the RRT* planner..."
@@ -79,8 +92,7 @@ cd "$PYLOT_HOME/dependencies/"
 if [ ! -d "rrt_star_planner" ]; then
     git clone https://github.com/erdos-project/rrt_star_planner.git
 fi
-cd rrt_star_planner/
-bash build.sh
+build_planner "$PYLOT_HOME/dependencies/rrt_star_planner"
 
 ###### Build the Hybrid A* Planner ######
 echo "[x] Compiling the Hybrid A* planner..."
@@ -88,8 +100,7 @@ cd "$PYLOT_HOME/dependencies/"
 if [ ! -d "hybrid_astar_planner" ]; then
     git clone https://github.com/erdos-project/hybrid_astar_planner.git
 fi
-cd hybrid_astar_planner/
-bash build.sh
+build_planner "$PYLOT_HOME/dependencies/hybrid_astar_planner"
 
 ###### Clone the Prediction Repository #####
 echo "[x] Cloning the prediction code..."
