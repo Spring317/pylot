@@ -283,7 +283,7 @@ cd "$PYLOT_HOME/dependencies/"
 if [ "$1" != 'challenge' ] && [ ! -d "CARLA_0.9.10.1" ]; then
     mkdir CARLA_0.9.10.1
     cd CARLA_0.9.10.1
-    wget https://carla-releases.s3.eu-west-3.amazonaws.com/Linux/CARLA_0.9.10.1.tar.gz
+    wget -O CARLA_0.9.10.1.tar.gz https://tiny.carla.org/carla-0-9-10-1-rss-linux
     tar -xvf CARLA_0.9.10.1.tar.gz
     rm CARLA_0.9.10.1.tar.gz
 fi
