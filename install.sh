@@ -17,6 +17,27 @@ fi
 
 CONDA_ENV_NAME="pylot"
 
+# Try to initialize conda if it's not already available.
+# `conda` is a shell function injected by `conda init` (via ~/.bashrc),
+# which doesn't run in non-interactive shells (e.g. `bash install.sh`).
+# Auto-detect the conda installation and initialize it.
+if ! command -v conda &> /dev/null; then
+    # Search common locations for the conda binary
+    for _conda_bin in \
+        "$CONDA_EXE" \
+        "$HOME/miniconda3/bin/conda" \
+        "$HOME/miniforge3/bin/conda" \
+        "$HOME/anaconda3/bin/conda" \
+        "$(find /storage/$(whoami) -maxdepth 3 -name conda -path "*/bin/conda" 2>/dev/null | head -1)"
+    do
+        if [ -x "$_conda_bin" ]; then
+            eval "$("$_conda_bin" shell.bash hook)"
+            break
+        fi
+    done
+    unset _conda_bin
+fi
+
 # Check that conda is available
 if ! command -v conda &> /dev/null; then
     echo "ERROR: 'conda' is not available."
