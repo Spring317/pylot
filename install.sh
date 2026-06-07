@@ -67,6 +67,17 @@ conda activate "$CONDA_ENV_NAME"
 echo "INFO: Using python at $(which python3) ($(python3 --version))"
 echo "INFO: Using cmake at $(which cmake) ($(cmake --version | head -1))"
 
+# Disable conda's compiler_compat/ld globally for all native builds.
+# This linker has hardcoded references to /lib64/libpthread.so.0 which
+# doesn't exist on modern glibc (>=2.34, where libpthread merged into libc).
+# All setup.py / pip install builds that compile C extensions will fail
+# without this. The cmake-based planner builds are unaffected (they use
+# the cross-toolchain linker directly).
+if [ -f "$CONDA_PREFIX/compiler_compat/ld" ] && [ ! -f "$CONDA_PREFIX/compiler_compat/ld.bak" ]; then
+    mv "$CONDA_PREFIX/compiler_compat/ld" "$CONDA_PREFIX/compiler_compat/ld.bak"
+    echo "INFO: Disabled compiler_compat/ld (modern glibc workaround)"
+fi
+
 ###############################################################################
 # Get models & code bases we depend on
 ###############################################################################
@@ -245,6 +256,12 @@ if [ "$1" != 'challenge' ] && [ ! -d "CARLA_0.9.10.1" ]; then
     wget https://carla-releases.s3.eu-west-3.amazonaws.com/Linux/CARLA_0.9.10.1.tar.gz
     tar -xvf CARLA_0.9.10.1.tar.gz
     rm CARLA_0.9.10.1.tar.gz
+fi
+
+# Restore the compat linker now that all builds are done
+if [ -f "$CONDA_PREFIX/compiler_compat/ld.bak" ]; then
+    mv "$CONDA_PREFIX/compiler_compat/ld.bak" "$CONDA_PREFIX/compiler_compat/ld"
+    echo "INFO: Restored compiler_compat/ld"
 fi
 
 echo ""
