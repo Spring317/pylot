@@ -12,7 +12,7 @@ dependencies:
   - libpng
   - geos
   - llvmdev
-  - eigen
+  - eigen=3.*
   - qt
   - mesa-libgl-devel-cos7-x86_64  # GL/gl.h for Qt5Gui
   - git

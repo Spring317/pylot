@@ -91,9 +91,23 @@ _ensure_gl_headers() {
     echo "WARNING: GL/gl.h not found; Qt5-based planner builds may fail."
 }
 
+# The planner source code uses #include <eigen3/Eigen/Dense>, expecting
+# "eigen3/" to sit under a standard include path (e.g. /usr/include/).
+# Conda's find_package(Eigen3) adds $CONDA_PREFIX/include/eigen3 as the
+# include dir, so the compiler looks for eigen3/eigen3/Eigen/Dense — which
+# doesn't exist. Fix: create a self-referencing symlink so both styles work.
+_ensure_eigen_headers() {
+    local eigen_dir="$CONDA_PREFIX/include/eigen3"
+    if [ -d "$eigen_dir" ] && [ ! -e "$eigen_dir/eigen3" ]; then
+        ln -s . "$eigen_dir/eigen3"
+        echo "    Created eigen3 compatibility symlink."
+    fi
+}
+
 build_planner() {
     local planner_dir="$1"
     _ensure_gl_headers
+    _ensure_eigen_headers
     cd "$planner_dir"
     mkdir -p build
     cd build
