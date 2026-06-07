@@ -95,6 +95,10 @@ else
     echo "         Install with:  conda install -c conda-forge cudatoolkit-dev"
 fi
 
+# PyTorch 1.4.0 does not recognize modern Ampere/Ada GPUs (compute capability 8.x/9.x).
+# Explicitly set the CUDA arch list so it doesn't fail when querying the host GPU.
+export TORCH_CUDA_ARCH_LIST="6.0;6.1;7.0;7.5"
+
 ###############################################################################
 # Get models & code bases we depend on
 ###############################################################################
