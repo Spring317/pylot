@@ -14,6 +14,7 @@ dependencies:
   - llvmdev
   - eigen
   - qt
+  - mesa-libgl-devel-cos7-x86_64  # GL/gl.h for Qt5Gui
   - git
   - wget
   - unzip

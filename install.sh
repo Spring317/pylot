@@ -67,8 +67,33 @@ echo "[x] Compiling the planners..."
 # Helper: build a planner with cmake using conda-provided deps (no sudo).
 # The upstream build.sh scripts call `sudo apt-get install` which fails on
 # HPC clusters. We skip them and run cmake directly.
+#
+# Qt5Gui's cmake config requires GL/gl.h under the Qt prefix include dir.
+# Ensure it is available by symlinking from the CDT sysroot or the system.
+_ensure_gl_headers() {
+    local target="$CONDA_PREFIX/include/GL"
+    if [ -f "$target/gl.h" ]; then
+        return 0
+    fi
+    # Try conda CDT sysroot first
+    local sysroot="$CONDA_PREFIX/x86_64-conda-linux-gnu/sysroot/usr/include/GL"
+    if [ -f "$sysroot/gl.h" ]; then
+        ln -sfn "$sysroot" "$target"
+        echo "    Symlinked GL headers from conda sysroot."
+        return 0
+    fi
+    # Fall back to system headers
+    if [ -f "/usr/include/GL/gl.h" ]; then
+        ln -sfn "/usr/include/GL" "$target"
+        echo "    Symlinked GL headers from /usr/include."
+        return 0
+    fi
+    echo "WARNING: GL/gl.h not found; Qt5-based planner builds may fail."
+}
+
 build_planner() {
     local planner_dir="$1"
+    _ensure_gl_headers
     cd "$planner_dir"
     mkdir -p build
     cd build
