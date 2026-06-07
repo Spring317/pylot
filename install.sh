@@ -134,7 +134,8 @@ build_planner() {
     cd build
     cmake .. \
         -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_PREFIX_PATH="$CONDA_PREFIX"
+        -DCMAKE_PREFIX_PATH="$CONDA_PREFIX" \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5
     cmake --build . --target all -- -j 8
 }
 
