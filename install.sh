@@ -67,6 +67,15 @@ conda activate "$CONDA_ENV_NAME"
 echo "INFO: Using python at $(which python3) ($(python3 --version))"
 echo "INFO: Using cmake at $(which cmake) ($(cmake --version | head -1))"
 
+# nvcc strictly looks for 'gcc' and 'g++' in the PATH (ignoring CC/CXX).
+# If the system gcc is too new (e.g., GCC 14), nvcc will reject it.
+# We symlink conda's gcc-7 to 'gcc' and 'g++' in the conda bin directory.
+if [ -x "$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-cc" ]; then
+    ln -sf "$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-cc" "$CONDA_PREFIX/bin/gcc"
+    ln -sf "$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-c++" "$CONDA_PREFIX/bin/g++"
+    echo "INFO: Symlinked conda's GCC to 'gcc' and 'g++' for nvcc compatibility."
+fi
+
 # Disable conda's compiler_compat/ld globally for all native builds.
 # This linker has hardcoded references to /lib64/libpthread.so.0 which
 # doesn't exist on modern glibc (>=2.34, where libpthread merged into libc).
