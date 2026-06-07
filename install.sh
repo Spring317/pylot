@@ -78,6 +78,23 @@ if [ -f "$CONDA_PREFIX/compiler_compat/ld" ] && [ ! -f "$CONDA_PREFIX/compiler_c
     echo "INFO: Disabled compiler_compat/ld (modern glibc workaround)"
 fi
 
+# Set CUDA_HOME for PyTorch C++ / CUDA extensions (DCNv2, AnyNet, etc.).
+# PyTorch's cpp_extension.py requires this to find nvcc and CUDA headers.
+if [ -z "$CUDA_HOME" ]; then
+    if [ -x "$CONDA_PREFIX/bin/nvcc" ]; then
+        export CUDA_HOME="$CONDA_PREFIX"
+    elif [ -d "/usr/local/cuda" ]; then
+        export CUDA_HOME="/usr/local/cuda"
+    fi
+fi
+if [ -n "$CUDA_HOME" ]; then
+    echo "INFO: CUDA_HOME=$CUDA_HOME (nvcc: $(command -v nvcc 2>/dev/null || echo 'not on PATH'))"
+else
+    echo "WARNING: CUDA_HOME not set and nvcc not found."
+    echo "         CUDA extension builds (DCNv2, AnyNet) will fail."
+    echo "         Install with:  conda install -c conda-forge cudatoolkit-dev"
+fi
+
 ###############################################################################
 # Get models & code bases we depend on
 ###############################################################################
