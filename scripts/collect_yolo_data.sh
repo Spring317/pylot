@@ -22,7 +22,7 @@ for town in ${towns[@]}; do
         SDL_VIDEODRIVER=offscreen ${CARLA_HOME}/CarlaUE4.sh -opengl /Game/Carla/Maps/Town0${town} -windowed -ResX=1280 -ResY=720 -carla-server -benchmark -fps=10 &
         sleep 10
         mkdir -p $1/town0${town}_start${sp}/
-        python3 data_gatherer.py --flagfile=configs/yolo_data_gatherer.conf --carla_spawn_point_index=${sp} --data_path=$1/town0${town}_start${sp}/ --simulator_town=${town} &
+        python3 data_gatherer.py --flagfile=configs/yolo_data_gatherer.conf --simulator_spawn_point_index=${sp} --data_path=$1/town0${town}_start${sp}/ --simulator_town=${town} &
         # Collect data for 300 seconds (~120 frames per run at 2 fps).
         sleep 300
         # Kill data gathering script and Carla.

@@ -22,7 +22,7 @@ for pn in ${start_player_nums[@]}; do
         SDL_VIDEODRIVER=offscreen ${CARLA_HOME}/CarlaUE4.sh -opengl /Game/Carla/Maps/Town0${town} -windowed -ResX=1920 -ResY=1080 -carla-server -benchmark -fps=10 &
         sleep 10
         mkdir $1/town0${town}_start${pn}/
-        python3 data_gatherer.py --flagfile=configs/data_gatherer.conf --carla_spawn_point_index=${pn} --data_path=$1/town0${town}_start${pn}/ --simulator_town=${town} &
+        python3 data_gatherer.py --flagfile=configs/data_gatherer.conf --simulator_spawn_point_index=${pn} --data_path=$1/town0${town}_start${pn}/ --simulator_town=${town} &
         # Collect data for an hour.
         sleep 4800
         # Kill data gathering script and Carla.
