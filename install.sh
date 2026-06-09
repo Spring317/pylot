@@ -113,15 +113,40 @@ export TORCH_CUDA_ARCH_LIST="6.0;6.1;7.0;7.5"
 ###############################################################################
 cd "$PYLOT_HOME/dependencies/"
 
-###### Download the model weights ######
-echo "[x] Downloading all model weights..."
-cd "$PYLOT_HOME/dependencies/"
-if [ ! -d "models" ] || [ -z "$(ls -A models 2>/dev/null)" ]; then
-    gdown https://drive.google.com/uc?id=1rQKFDxGDFi3rBLsMrJzb7oGZvvtwgyiL
-    unzip models.zip ; rm models.zip
-else
-    echo "    models/ already exists, skipping download."
-fi
+###### Model weights ######
+# NOTE: The original Google Drive model archive (id=1rQKFDxGDFi3rBLsMrJzb7oGZvvtwgyiL)
+# is no longer available (HTTP 404). To use the YOLO-based obstacle detector instead:
+#
+#   1. Collect data from CARLA:
+#        bash scripts/collect_yolo_data.sh /path/to/raw_data
+#
+#   2. Convert to YOLO format:
+#        python scripts/convert_carla_to_yolo.py \
+#            --data_dirs /path/to/raw_data/town01_start0,... \
+#            --output_dir dependencies/datasets/yolo_dataset
+#
+#   3. Train YOLO:
+#        python scripts/train_yolo.py \
+#            --dataset dependencies/datasets/yolo_dataset \
+#            --model yolov8s.pt --epochs 100
+#
+#   4. Copy best weights to the expected path:
+#        mkdir -p dependencies/models/obstacle_detection/yolo
+#        cp runs/yolo_carla/train/weights/best.pt \
+#            dependencies/models/obstacle_detection/yolo/best.pt
+#
+#   5. Use --obstacle_detection with the YoloDetectionOperator by setting
+#      --yolo_detection_model_path=dependencies/models/obstacle_detection/yolo/best.pt
+#
+# If you already have a compatible faster-rcnn TF saved_model directory, place it at:
+#   dependencies/models/obstacle_detection/faster-rcnn/
+echo "[x] Skipping model weight download (original archive unavailable)."
+echo "    See install.sh comments for the YOLO training workflow."
+mkdir -p "$PYLOT_HOME/dependencies/models/obstacle_detection/yolo"
+mkdir -p "$PYLOT_HOME/dependencies/models/traffic_light_detection"
+mkdir -p "$PYLOT_HOME/dependencies/models/segmentation/drn"
+mkdir -p "$PYLOT_HOME/dependencies/models/depth_estimation"
+mkdir -p "$PYLOT_HOME/dependencies/models/tracking"
 
 #################### Download the code bases ####################
 echo "[x] Compiling the planners..."
@@ -280,12 +305,33 @@ python3 setup.py build
 ###### Download the Carla simulator ######
 echo "[x] Downloading the CARLA 0.9.10.1 simulator..."
 cd "$PYLOT_HOME/dependencies/"
+# Remove empty leftover directory from a previously failed download
+if [ -d "CARLA_0.9.10.1" ] && [ -z "$(ls -A CARLA_0.9.10.1 2>/dev/null)" ]; then
+    rmdir CARLA_0.9.10.1
+    echo "    Removed empty CARLA_0.9.10.1 directory from previous failed attempt."
+fi
 if [ "$1" != 'challenge' ] && [ ! -d "CARLA_0.9.10.1" ]; then
     mkdir CARLA_0.9.10.1
     cd CARLA_0.9.10.1
-    wget -O CARLA_0.9.10.1.tar.gz https://tiny.carla.org/carla-0-9-10-1-rss-linux
+    wget -O CARLA_0.9.10.1.tar.gz https://carla-releases.s3.us-east-005.backblazeb2.com/Linux/CARLA_0.9.10.1.tar.gz
     tar -xvf CARLA_0.9.10.1.tar.gz
     rm CARLA_0.9.10.1.tar.gz
+fi
+# Install the CARLA Python API (.egg) into the conda environment.
+# Modern pip cannot install .egg files, so we add it to PYTHONPATH
+# via a conda activate.d hook script (runs automatically on `conda activate`).
+CARLA_EGG="$PYLOT_HOME/dependencies/CARLA_0.9.10.1/PythonAPI/carla/dist/carla-0.9.10-py3.7-linux-x86_64.egg"
+CARLA_API="$PYLOT_HOME/dependencies/CARLA_0.9.10.1/PythonAPI/carla"
+if [ -f "$CARLA_EGG" ]; then
+    mkdir -p "$CONDA_PREFIX/etc/conda/activate.d"
+    cat > "$CONDA_PREFIX/etc/conda/activate.d/carla.sh" <<EOF
+export PYTHONPATH="\$PYTHONPATH:$CARLA_EGG:$CARLA_API"
+EOF
+    # Also export it now for the rest of this script
+    export PYTHONPATH="$PYTHONPATH:$CARLA_EGG:$CARLA_API"
+    echo "    CARLA Python API added to PYTHONPATH (auto-loads on conda activate)"
+else
+    echo "WARNING: CARLA .egg not found at $CARLA_EGG"
 fi
 
 # Restore the compat linker now that all builds are done
@@ -293,6 +339,10 @@ if [ -f "$CONDA_PREFIX/compiler_compat/ld.bak" ]; then
     mv "$CONDA_PREFIX/compiler_compat/ld.bak" "$CONDA_PREFIX/compiler_compat/ld"
     echo "INFO: Restored compiler_compat/ld"
 fi
+
+echo "[x] Installing pylot into the conda environment..."
+cd "$PYLOT_HOME"
+python3 -m pip install -e .
 
 echo ""
 echo "========================================"

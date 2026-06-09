@@ -9,6 +9,7 @@ CARLA simulator and real-world cars.
 * [**Documentation**](https://pylot.readthedocs.io/en/latest/)
 * [**Pylot components**](#pylot-components)
 * [**Data collection**](#data-collection)
+* [**Training a YOLO obstacle detector**](#training-a-yolo-obstacle-detector)
 * [**Build Docker image**](#build-your-own-docker-image)
 * [**CARLA autonomous driving challenge**](#carla-autonomous-driving-challenge)
 * [**Getting involved**](#getting-involved)
@@ -120,20 +121,36 @@ segmentation, prediction, planning, and the driving policy.
 You can also run components in isolation:
 
 ### Obstacle detection
-Pylot supports three object detection models: `frcnn_resnet101`,
-`ssd-mobilenet-fpn-640` and `ssdlite-mobilenet-v2`. The following command runs
-a detector in isolation:
+
+Pylot supports three object detection backends, selected with
+`--obstacle_detector_model`:
+
+| `--obstacle_detector_model` | Backend | Model file |
+|---|---|---|
+| `faster-rcnn` (default) | TensorFlow Faster-RCNN saved model | `--obstacle_detection_model_paths` |
+| `efficientdet` | TensorFlow EfficientDet | `--obstacle_detection_model_paths` |
+| `yolo` | YOLOv8 via Ultralytics | `--yolo_detection_model_path` |
+
+Run the **original Faster-RCNN** detector:
 
 ```console
 python3 pylot.py --flagfile=configs/detection.conf
 ```
 
+Run the **YOLO** detector (after training — see [Training a YOLO obstacle
+detector](#training-a-yolo-obstacle-detector)):
+
+```console
+python3 pylot.py --flagfile=configs/yolo_detection.conf
+```
+
 In case you want to evaluate the detector (i.e., compute mAP), you can run:
+
 ```console
 python3 pylot.py --flagfile=configs/detection.conf --evaluate_obstacle_detection
 ```
 
-In case you are not satisfied with the accuracy of our obstacle detector, you
+In case you are not satisfied with the accuracy of any detector, you
 can run a perfect version of it:
 
 ```console
@@ -239,14 +256,205 @@ by passing: `--log_file_name=pylot.log --v=1` to your command.
 
 # Data collection
 
-Pylot also provides a script for collecting CARLA data such as: RGB images,
+Pylot provides a script for collecting CARLA driving data such as RGB images,
 segmented images, obstacle 2D bounding boxes, depth frames, point clouds,
 traffic lights, obstacle trajectories, and data in Chauffeur format.
 
 Run ```python3 data_gatherer.py --help``` to see what data you can collect.
-Alternatively, you can inspect this
-[configuration](https://github.com/erdos-project/pylot/blob/master/configs/data_gatherer.conf)
-for an example of a data collection setup.
+Alternatively, you can inspect
+[`configs/data_gatherer.conf`](configs/data_gatherer.conf)
+for a full data-collection example, or
+[`configs/yolo_data_gatherer.conf`](configs/yolo_data_gatherer.conf)
+for a lightweight config that collects only what YOLO training needs.
+
+### Collecting YOLO training data
+
+The helper script [`scripts/collect_yolo_data.sh`](scripts/collect_yolo_data.sh)
+iterates over all 5 CARLA towns and 2 spawn points, launching CARLA headlessly
+and collecting ≈120 labelled frames per run (~5 min each):
+
+```console
+export PYLOT_HOME=/path/to/pylot
+export CARLA_HOME=$PYLOT_HOME/dependencies/CARLA_0.9.10.1
+
+bash scripts/collect_yolo_data.sh /data/yolo_raw
+```
+
+The collected data has the following layout per run:
+
+```
+/data/yolo_raw/town01_start0/
+  center/           # center-{timestamp}.png  — RGB frames (1280×720)
+  bboxes/           # bboxes-{timestamp}.json — obstacle bounding boxes
+  tl-bboxes/        # tl-bboxes-{timestamp}.json — traffic-light bboxes
+```
+
+Each bounding-box JSON file is an array of entries with the form:
+```json
+["vehicle", "vehicle.ford.mustang", 42, [[320, 210], [640, 480]]]
+```
+Fields: `[label, detailed_label, actor_id, [[xmin, ymin], [xmax, ymax]]]`
+
+# Training a YOLO obstacle detector
+
+> **Note:** The original model archive distributed with Pylot is no longer
+> available. The steps below let you train a replacement YOLOv8 model entirely
+> from CARLA data.
+
+## Prerequisites
+
+```console
+pip install ultralytics          # YOLOv8 training & inference
+```
+
+`ultralytics` is already listed in `requirements.txt` and will be installed by
+`install.sh`.
+
+## Step 1 — Collect raw data from CARLA
+
+```console
+export PYLOT_HOME=/path/to/pylot
+export CARLA_HOME=$PYLOT_HOME/dependencies/CARLA_0.9.10.1
+
+# Collects ~1 200 labelled frames across 5 towns (≈50 min total)
+bash scripts/collect_yolo_data.sh /data/yolo_raw
+```
+
+Tweak [`configs/yolo_data_gatherer.conf`](configs/yolo_data_gatherer.conf) to
+adjust resolution, population density, or collection frequency.
+
+## Step 2 — Convert to YOLO format
+
+[`scripts/convert_carla_to_yolo.py`](scripts/convert_carla_to_yolo.py)
+reads the raw Pylot logs and writes a YOLO dataset with train / val / test
+splits and a `dataset.yaml` descriptor.
+
+```console
+python scripts/convert_carla_to_yolo.py \
+    --data_dirs /data/yolo_raw/town01_start0,/data/yolo_raw/town01_start25,\
+/data/yolo_raw/town02_start0,/data/yolo_raw/town02_start25 \
+    --output_dir /data/yolo_dataset \
+    --train_ratio 0.70 \
+    --val_ratio   0.20
+```
+
+Pass `--include_traffic_lights` to also annotate the 4 traffic-light states
+(red / yellow / green / off) as separate classes.
+
+The output layout is standard YOLO:
+
+```
+/data/yolo_dataset/
+  images/
+    train/   val/   test/
+  labels/
+    train/   val/   test/
+  dataset.yaml
+```
+
+**Default classes** (indices used in label files):
+
+| ID | Label |
+|---|---|
+| 0 | `person` |
+| 1 | `vehicle` |
+| 2 | `red traffic light` *(with `--include_traffic_lights`)* |
+| 3 | `yellow traffic light` |
+| 4 | `green traffic light` |
+| 5 | `off traffic light` |
+
+## Step 3 — Train
+
+[`scripts/train_yolo.py`](scripts/train_yolo.py) wraps the Ultralytics
+`YOLO.train()` API with sensible defaults and a few convenience flags.
+
+```console
+# Fine-tune a pretrained yolov8s backbone — recommended starting point
+python scripts/train_yolo.py \
+    --dataset /data/yolo_dataset \
+    --model   yolov8s.pt \
+    --epochs  100 \
+    --imgsz   640 \
+    --batch   16 \
+    --device  0          # GPU index; "" for auto, "cpu" for CPU
+
+# Larger model for better accuracy at the cost of speed
+python scripts/train_yolo.py \
+    --dataset /data/yolo_dataset \
+    --model   yolov8m.pt \
+    --epochs  100 \
+    --device  0
+```
+
+Key flags:
+
+| Flag | Default | Description |
+|---|---|---|
+| `--model` | `yolov8n.pt` | Backbone; any `yolov8{n,s,m,l,x}.pt` or path to `.pt` |
+| `--epochs` | `100` | Training epochs |
+| `--imgsz` | `640` | Input square size (px) |
+| `--batch` | `16` | Batch size (`-1` = auto) |
+| `--patience` | `30` | Early-stopping patience |
+| `--resume` | `False` | Resume from last checkpoint |
+| `--no-test` | — | Skip test-split evaluation after training |
+
+The script prints the path to the best weights when done:
+
+```
+[INFO] Best weights saved to: runs/yolo_carla/train/weights/best.pt
+```
+
+## Step 4 — Install weights and run Pylot
+
+```console
+mkdir -p $PYLOT_HOME/dependencies/models/obstacle_detection/yolo
+cp runs/yolo_carla/train/weights/best.pt \
+   $PYLOT_HOME/dependencies/models/obstacle_detection/yolo/best.pt
+```
+
+Run Pylot with the YOLO detector:
+
+```console
+python3 pylot.py --flagfile=configs/yolo_detection.conf
+```
+
+Or add these flags to any existing config:
+
+```
+--obstacle_detection
+--obstacle_detector_model=yolo
+--yolo_detection_model_path=dependencies/models/obstacle_detection/yolo/best.pt
+--nosimulator_obstacle_detection
+```
+
+To visualize detections:
+
+```console
+python3 pylot.py --flagfile=configs/yolo_detection.conf \
+                 --visualize_detected_obstacles
+```
+
+## Evaluating the trained model
+
+After training, the test-split evaluation is run automatically. To re-run it
+manually:
+
+```console
+python scripts/train_yolo.py \
+    --dataset /data/yolo_dataset \
+    --model   runs/yolo_carla/train/weights/best.pt \
+    --epochs  0 \
+    --no-val  \
+    --no-test      # remove this flag to force test eval
+```
+
+Or use the Ultralytics CLI directly:
+
+```console
+yolo val model=runs/yolo_carla/train/weights/best.pt \
+          data=/data/yolo_dataset/dataset.yaml \
+          split=test
+```
 
 # Build your own Docker image
 

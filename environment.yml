@@ -19,7 +19,13 @@ dependencies:
   - wget
   - unzip
   - tk
+  # Shared libs required by CARLA's libcarla.so:
+  - tbb=2020                        # libtbb.so.2
+  - libjpeg-turbo                   # libjpeg.so.8
+  - libtiff=4.3                     # libtiff.so.5
   - cudatoolkit-dev=10.1  # nvcc + headers for PyTorch CUDA extensions (torch==1.4.0)
+  - cudatoolkit=11.2                # CUDA runtime for TensorFlow 2.5.1
+  - cudnn=8.1                       # cuDNN for TensorFlow 2.5.1
   - pip
   # Install cvxpy from conda-forge (pre-built) to avoid the
   # compiler_compat/ld linker error when pip tries to build
