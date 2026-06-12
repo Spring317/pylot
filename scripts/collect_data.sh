@@ -31,12 +31,12 @@ for pn in ${start_player_nums[@]}; do
     for town in ${towns[@]}; do
         echo "[x] Driving in town $town from start position $pn"
         echo "[x] Starting the CARLA simulator"
-        SDL_VIDEODRIVER=offscreen ${CARLA_HOME}/CarlaUE4.sh -opengl /Game/Carla/Maps/Town0${town} -windowed -ResX=1920 -ResY=1080 -carla-server -benchmark -fps=10 &
+        SDL_VIDEODRIVER=offscreen ${CARLA_HOME}/CarlaUE4.sh -opengl /Game/Carla/Maps/Town0${town} -RenderOffScreen -ResX=1920 -ResY=1080 -carla-server -world-port=33333 -benchmark -fps=10 &
         sleep 10
         run_name=town0${town}_start${pn}
         out_dir=$LOCAL_DIR/$run_name/
         mkdir -p "$out_dir"
-        python3 data_gatherer.py --flagfile=configs/data_gatherer.conf --simulator_spawn_point_index=${pn} --data_path=${out_dir} --simulator_town=${town} &
+        python3 data_gatherer.py --flagfile=configs/data_gatherer.conf --simulator_spawn_point_index=${pn} --simulator_port=33333 --data_path=${out_dir} --simulator_town=${town} &
         data_gatherer_pid=$!
         # Collect data for an hour.
         sleep 4800
