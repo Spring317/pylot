@@ -14,29 +14,6 @@ fi
 start_player_nums=(1 10 20 30 40)
 towns=(1 2 3 4 5)
 
-# Wait until a directory's total size stops changing, i.e. all buffered
-# writes have actually been flushed to the (possibly slow/networked) mount.
-# Polls every $2 seconds and requires $3 consecutive stable readings.
-wait_for_flush() {
-    local dir="$1"
-    local interval="${2:-10}"
-    local stable_needed="${3:-3}"
-    local stable_count=0
-    local last_size=-1
-    echo "[x] Waiting for $dir to finish flushing to disk..."
-    while [ $stable_count -lt $stable_needed ]; do
-        sleep "$interval"
-        local size=$(du -sb "$dir" 2>/dev/null | cut -f1)
-        if [ "$size" == "$last_size" ]; then
-            stable_count=$((stable_count + 1))
-        else
-            stable_count=0
-        fi
-        last_size=$size
-    done
-    echo "[x] $dir is fully flushed (size stable at ${last_size} bytes)."
-}
-
 cd $PYLOT_HOME
 for pn in ${start_player_nums[@]}; do
     for town in ${towns[@]}; do
@@ -55,11 +32,8 @@ for pn in ${start_player_nums[@]}; do
         echo "[x] Stopping data gathering..."
         kill -SIGINT $data_gatherer_pid
         wait $data_gatherer_pid 2>/dev/null
-        # Flush OS write buffers, then wait for the (slow/networked) output
-        # directory to stop growing before tearing down Carla.
+        # Flush OS write buffers before tearing down Carla.
         sync
-        wait_for_flush "$out_dir"
-        # Kill Carla now that all data has been written out.
         pkill -9 -f -u $USER CarlaUE4
         sleep 5
     done
