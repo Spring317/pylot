@@ -1,7 +1,14 @@
 import erdos
 
-# TODO: Hack to avoid a tensorflow import error.
-import tensorflow as tf  # noqa: F401
+# TensorFlow is only required by the optional faster-rcnn / efficientdet /
+# TF traffic-light / lanenet operators. Import it early when it's installed
+# (this ordering avoids a TF-vs-other-lib symbol clash), but don't hard-require
+# it -- so the torch/YOLO modular pipeline runs in a TF-free env where numpy
+# can be >= 1.20 (which ultralytics needs).
+try:
+    import tensorflow as tf  # noqa: F401
+except ImportError:
+    tf = None
 from absl import flags
 
 import pylot.utils

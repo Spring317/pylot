@@ -1,0 +1,10 @@
+__pycache__/
+build/
+venv/
+dist/
+*.egg-info/
+.idea/
+cmake-build-debug/
+*.pyc
+*.jpg
+.clang-format
