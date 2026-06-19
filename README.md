@@ -471,47 +471,50 @@ another one that contains ERDOS and Pylot.
 # CARLA autonomous driving challenge
 
 Pylot can also be used as a baseline for executing on the CARLA
-[**Leaderboard**](https://leaderboard.carla.org/) routes. We provide an  agent
+[**Leaderboard**](https://leaderboard.carla.org/) routes. We provide an agent
 that offers reference implementations for perception (i.e., detection,
 tracking), localization (Extended Kalman filter), prediction, planning
 (e.g., waypoint follower, Frenet optimal trajectory, RRT*, Hybrid A*),
 and control.
 
-To test this agent you can pull our image which has all the necessary software
-already installed.
+## Evaluating on the Leaderboard 1.0
 
-```console
-docker pull erdosproject/pylot-carla-challenge
-nvidia-docker run -itd --name pylot-challenge -p 20022:22 erdosproject/pylot-carla-challenge /bin/bash
+Pylot is designed to be compatible with **CARLA 0.9.10.1** and **Leaderboard 1.0**. We provide a launch script to handle the environment paths and evaluate the agent.
+
+First, ensure your CARLA simulator is running. To avoid crashes related to headless rendering, use `SDL_VIDEODRIVER=offscreen` and `-opengl` instead of `-RenderOffScreen`:
+
+```bash
+export PYLOT_HOME=/path/to/pylot
+export CARLA_HOME=$PYLOT_HOME/dependencies/CARLA_0.9.10.1
+
+# Start CARLA headlessly on port 2000
+SDL_VIDEODRIVER=offscreen $CARLA_HOME/CarlaUE4.sh -opengl -windowed -ResX=800 -ResY=600 -carla-server -world-port=2000 -benchmark -fps=20 -quality-level=Epic &
 ```
 
-Alternatively, you can manually install the dependencies on your machine by
-following the instructions provided below:
+Then, in a new terminal, run the evaluation script. We provide a custom config that sets the resolution to HD to save GPU memory:
 
-```console
-mkdir challenge
-export CHALLENGE_ROOT=`pwd`
-# Clone the challenge leaderboard repository.
-git clone -b stable --single-branch https://github.com/carla-simulator/leaderboard.git
-export LEADERBOARD_ROOT=${CHALLENGE_ROOT}/leaderboard/
-cd ${LEADERBOARD_ROOT} ; pip3 install -r requirements.txt ; cd ${CHALLENGE_ROOT}
-# Clone the CARLA scenario runner repository. This is used by the leaderboard.
-git clone -b leaderboard --single-branch https://github.com/carla-simulator/scenario_runner.git
-export SCENARIO_RUNNER_ROOT=${CHALLENGE_ROOT}/scenario_runner/
-cd ${SCENARIO_RUNNER_ROOT} ; pip3 install -r requirements.txt ; cd ${CHALLENGE_ROOT}
-# Checkout the CARLA challenge branch.
-cd ${PYLOT_HOME} ; git checkout -b challenge origin/challenge
-export CARLA_ROOT=Path to CARLA 0.9.10.1.
-cd ${CHALLENGE_ROOT}
-export TEAM_CODE_ROOT=${PYLOT_HOME} ; ${LEADERBOARD_ROOT}/scripts/make_docker.sh
+```bash
+export PYLOT_HOME=/path/to/pylot
+cd $PYLOT_HOME
+
+# Run the Quick DevTest evaluation
+bash scripts/run_leaderboard_eval.sh \
+    --config pylot/simulation/challenge/challenge_leaderboard_eval.conf
+
+# Or run the full training evaluation (can take hours)
+bash scripts/run_leaderboard_eval.sh \
+    --routes $PYLOT_HOME/leaderboard_eval/leaderboard/data/routes_training.xml \
+    --config pylot/simulation/challenge/challenge_leaderboard_eval.conf
 ```
+
+Once finished, the evaluator will save your Driving Score, Route Completion, and Infraction metrics in `leaderboard_eval/results.json`.
 
 ## Notes on the Pylot CARLA challenge agent
 Similar to regular Pylot, the [Challenge agent](https://github.com/erdos-project/pylot/blob/master/pylot/simulation/challenge/ERDOSAgent.py)
-not only connects different reference implementation, but also provides the
+not only connects different reference implementations, but also provides the
 option of testing them in different configurations (e.g., test prediction,
 planning and control with perfect perception). This can be done by changing the
-flags in the [challenge configuration](https://github.com/erdos-project/pylot/blob/master/pylot/simulation/challenge/challenge.conf)
+flags in the configuration file (`challenge_leaderboard_eval.conf`)
 according to the specification from the Pylot documentation.
 
 # More Information
