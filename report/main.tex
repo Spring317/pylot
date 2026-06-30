@@ -900,7 +900,30 @@ Analyzing the individual scenarios:
     \item \textbf{RouteScenario\_2}: The agent successfully completed 100\% of the 2.6~km route, with a penalty of 0.600 due to a vehicle collision, achieving a composed score of 60.00\%.
 \end{itemize}
 
-The global driving composition score across the entire evaluation is \textbf{54.30\%}, with an average route completion of 100.00\% and an average infraction penalty of 0.543. The game duration totaled 1089.6 seconds (\textasciitilde18.2 minutes) across a system wall-time of 2907.1 seconds (\textasciitilde48.5 minutes).
+The global driving composition score across the entire evaluation is \textbf{47.22\%}, with an average route completion of 78.51\% and an average infraction penalty of 0.580. The game duration totaled 836.8 seconds across a system wall-time of 2930.9 seconds.
+
+\subsection{Comparison with LangAuto Benchmark}
+To contextualize our pipeline's driving performance, we compare our results against the LangAuto benchmark baselines presented in the reference thesis. The benchmark evaluates various Large Language Model (LLM) backbones on similar CARLA routing tasks. Table~\ref{tab:thesis_comparison} compares the closed-loop driving metrics of our modular YOLOv8s pipeline against the standard track baselines.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Model Pipeline} & \textbf{Driving Score (\%)} & \textbf{Route Completion (\%)} & \textbf{Infraction Score} \\
+\midrule
+Random Init. & 10.7 & 16.2 & 0.63 \\
+LLaMA & 31.3 & 37.1 & 0.82 \\
+LLaMA2 & 32.8 & 40.1 & 0.81 \\
+Vicuna & 33.5 & 39.3 & 0.83 \\
+Vicuna-v1.5 & 34.0 & 39.0 & 0.85 \\
+LLaVA-v1.5 & 36.2 & 46.5 & \textbf{0.81} \\
+\midrule
+\textbf{Pylot + YOLOv8s (Ours)} & \textbf{47.2} & \textbf{78.5} & 0.58 \\
+\bottomrule
+\end{tabular}
+\caption{Comparison of Closed-Loop Driving Performance against LangAuto LLM baselines. Our modular pipeline achieves a significantly higher Driving Score and Route Completion, demonstrating superior navigation capability.}
+\label{tab:thesis_comparison}
+\end{table}
 
 \subsection{Pipeline Latency Profiling}
 Profiling data from the CSV trace log (\texttt{leaderboard\_eval.csv}) was aggregated over 3,512,936 processed frames. Table~\ref{tab:latency_profile} summarizes the latency measurements.

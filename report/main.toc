@@ -57,12 +57,13 @@
 \contentsline {section}{\numberline {4.2}Object Detector Benchmarks}{21}{section.4.2}%
 \contentsline {subsection}{\numberline {4.2.1}Latency Drift and Timely Accuracy}{21}{subsection.4.2.1}%
 \contentsline {section}{\numberline {4.3}Closed-Loop Driving Performance}{23}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Pipeline Latency Profiling}{24}{subsection.4.3.1}%
-\contentsline {section}{\numberline {4.4}Module-Level Evaluation}{24}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Tracking Evaluation}{24}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.3.1}Comparison with LangAuto Benchmark}{24}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Pipeline Latency Profiling}{24}{subsection.4.3.2}%
+\contentsline {section}{\numberline {4.4}Module-Level Evaluation}{25}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Tracking Evaluation}{25}{subsection.4.4.1}%
 \contentsline {subsection}{\numberline {4.4.2}Prediction Evaluation}{25}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}Control Evaluation}{25}{subsection.4.4.3}%
-\contentsline {chapter}{\numberline {5}Conclusions and Future Works}{26}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Conclusions}{26}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Future Works}{26}{section.5.2}%
-\contentsline {chapter}{Bibliography}{27}{section.5.2}%
+\contentsline {subsection}{\numberline {4.4.3}Control Evaluation}{26}{subsection.4.4.3}%
+\contentsline {chapter}{\numberline {5}Conclusions and Future Works}{27}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Conclusions}{27}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Future Works}{27}{section.5.2}%
+\contentsline {chapter}{Bibliography}{28}{section.5.2}%
