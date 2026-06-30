@@ -3,47 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: ieeetr.bst
 Database file #1: references.bib
-Warning--I didn't find a database entry for "kahn_process"
-Warning--I didn't find a database entry for "motchallenge"
-You've used 29 entries,
+You've used 30 entries,
             1876 wiz_defined-function locations,
-            613 strings with 8191 characters,
-and the built_in function-call counts, 5614 in all, are:
-= -- 415
-> -- 323
+            618 strings with 8286 characters,
+and the built_in function-call counts, 5923 in all, are:
+= -- 451
+> -- 327
 < -- 0
-+ -- 118
-- -- 89
-* -- 379
-:= -- 872
-add.period$ -- 30
-call.type$ -- 29
-change.case$ -- 28
++ -- 120
+- -- 90
+* -- 398
+:= -- 911
+add.period$ -- 31
+call.type$ -- 30
+change.case$ -- 29
 chr.to.int$ -- 0
-cite$ -- 29
-duplicate$ -- 344
-empty$ -- 651
-format.name$ -- 89
-if$ -- 1324
+cite$ -- 30
+duplicate$ -- 361
+empty$ -- 681
+format.name$ -- 90
+if$ -- 1402
 int.to.chr$ -- 0
-int.to.str$ -- 29
-missing$ -- 29
-newline$ -- 91
-num.names$ -- 29
-pop$ -- 182
+int.to.str$ -- 30
+missing$ -- 30
+newline$ -- 94
+num.names$ -- 30
+pop$ -- 184
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 92
+skip$ -- 106
 stack$ -- 0
-substring$ -- 83
-swap$ -- 48
+substring$ -- 115
+swap$ -- 57
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 38
-width$ -- 31
-write$ -- 241
-(There were 2 warnings)
+while$ -- 42
+width$ -- 32
+write$ -- 251

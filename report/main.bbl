@@ -1,5 +1,29 @@
 \begin{thebibliography}{10}
 
+\bibitem{yolov8}
+G.~Jocher, A.~Chaurasia, and J.~Qiu, ``Ultralytics {YOLOv8},'' 2023.
+
+\bibitem{sort_tracker}
+A.~Bewley, Z.~Ge, L.~Ott, F.~Ramos, and B.~Upcroft, ``Simple online and
+  realtime tracking,'' in {\em IEEE International Conference on Image
+  Processing (ICIP)}, 2016.
+
+\bibitem{erdos_pylot}
+I.~Gog, S.~Kalra, P.~Schafhalter, M.~Wright, J.~E. Gonzalez, and I.~Stoica,
+  ``Pylot: {A} modular autonomous vehicle platform for developing and testing
+  autonomous vehicle components,'' in {\em Proceedings of the 2022 USENIX
+  Annual Technical Conference (ATC)}, 2022.
+
+\bibitem{frenet_planner}
+M.~Werling, J.~Ziegler, S.~Kammel, and S.~Thrun, ``Optimal trajectory
+  generation for dynamic street scenarios in a {Frenet} frame,'' {\em IEEE
+  International Conference on Robotics and Automation (ICRA)}, 2010.
+
+\bibitem{pid_control}
+G.~F. Franklin, J.~D. Powell, and A.~Emami-Naeini, {\em Feedback Control of
+  Dynamic Systems}.
+\newblock Pearson, 2019.
+
 \bibitem{alvinn1989}
 D.~A. Pomerleau, ``Alvinn: An autonomous land vehicle in a neural network,'' in
   {\em Advances in Neural Information Processing Systems}, 1989.
@@ -9,14 +33,19 @@ C.~Thorpe, M.~Hebert, T.~Kanade, and S.~Shafer, ``Vision and navigation for the
   carnegie-mellon navlab,'' {\em IEEE Transactions on Pattern Analysis and
   Machine Intelligence}, 1988.
 
+\bibitem{dickmanns1994}
+E.~D. Dickmanns {\em et~al.}, ``The seeing passenger car 'vamp','' in {\em
+  Intelligent Vehicles '94 Symposium}, 1994.
+
 \bibitem{dickmanns1986}
 E.~D. Dickmanns and A.~Zapp, ``A curvature-based scheme for improving the
   robustness of autonomous visual road following,'' in {\em Mobile Robots},
   1986.
 
-\bibitem{dickmanns1994}
-E.~D. Dickmanns {\em et~al.}, ``The seeing passenger car 'vamp','' in {\em
-  Intelligent Vehicles '94 Symposium}, 1994.
+\bibitem{wang2023}
+J.~Wang {\em et~al.}, ``Motion planning for autonomous driving: The state of
+  the art and future perspectives,'' {\em IEEE Transactions on Intelligent
+  Vehicles}, 2023.
 
 \bibitem{alexnet2012}
 A.~Krizhevsky, I.~Sutskever, and G.~E. Hinton, ``Imagenet classification with
@@ -38,6 +67,11 @@ X.~Chen, H.~Ma, J.~Wan, B.~Li, and T.~Xia, ``Multi-view 3d object detection
   network for autonomous driving,'' in {\em Proceedings of the IEEE conference
   on computer vision and pattern recognition}, 2017.
 
+\bibitem{nuscenes2020}
+H.~Caesar {\em et~al.}, ``nuscenes: A multimodal dataset for autonomous
+  driving,'' in {\em Proceedings of the IEEE/CVF conference on computer vision
+  and pattern recognition}, 2020.
+
 \bibitem{bojarski2016}
 M.~Bojarski {\em et~al.}, ``End to end learning for self-driving cars,'' {\em
   arXiv preprint arXiv:1604.07316}, 2016.
@@ -55,15 +89,19 @@ H.~Xu, Y.~Gao, F.~Yu, and T.~Darrell, ``End-to-end learning of driving models
 S.~Aradi, ``Survey of deep reinforcement learning for autonomous driving,''
   {\em IEEE Transactions on Intelligent Transportation Systems}, 2020.
 
-\bibitem{nuscenes2020}
-H.~Caesar {\em et~al.}, ``nuscenes: A multimodal dataset for autonomous
-  driving,'' in {\em Proceedings of the IEEE/CVF conference on computer vision
-  and pattern recognition}, 2020.
-
 \bibitem{swin2021}
 Z.~Liu {\em et~al.}, ``Swin transformer: Hierarchical vision transformer using
   shifted windows,'' in {\em Proceedings of the IEEE/CVF international
   conference on computer vision}, 2021.
+
+\bibitem{bojarski2019}
+M.~Bojarski {\em et~al.}, ``The mythos of model interpretability,'' {\em arXiv
+  preprint arXiv:1902.06292}, 2019.
+
+\bibitem{codevilla2019}
+F.~Codevilla {\em et~al.}, ``Exploring the limitations of behavior cloning for
+  autonomous driving,'' in {\em Proceedings of the IEEE/CVF International
+  Conference on Computer Vision}, 2019.
 
 \bibitem{uniad2023}
 A.~Hu {\em et~al.}, ``Planning-oriented autonomous driving,'' in {\em
@@ -75,25 +113,9 @@ X.~Wu {\em et~al.}, ``Foundation models for autonomous driving systems: An
   initial roadmap,'' {\em ACM Transactions on Software Engineering and
   Methodology}, 2026.
 
-\bibitem{wang2023}
-J.~Wang {\em et~al.}, ``Motion planning for autonomous driving: The state of
-  the art and future perspectives,'' {\em IEEE Transactions on Intelligent
-  Vehicles}, 2023.
-
-\bibitem{codevilla2019}
-F.~Codevilla {\em et~al.}, ``Exploring the limitations of behavior cloning for
-  autonomous driving,'' in {\em Proceedings of the IEEE/CVF International
-  Conference on Computer Vision}, 2019.
-
-\bibitem{bojarski2019}
-M.~Bojarski {\em et~al.}, ``The mythos of model interpretability,'' {\em arXiv
-  preprint arXiv:1902.06292}, 2019.
-
-\bibitem{erdos_pylot}
-I.~Gog, S.~Kalra, P.~Schafhalter, M.~Wright, J.~E. Gonzalez, and I.~Stoica,
-  ``Pylot: {A} modular autonomous vehicle platform for developing and testing
-  autonomous vehicle components,'' in {\em Proceedings of the 2022 USENIX
-  Annual Technical Conference (ATC)}, 2022.
+\bibitem{kahn_process}
+G.~Kahn, ``The semantics of a simple language for parallel programming,'' {\em
+  Information processing}, vol.~74, pp.~471--475, 1974.
 
 \bibitem{carla_sim}
 A.~Dosovitskiy, G.~Ros, F.~Codevilla, A.~Lopez, and V.~Koltun, ``{CARLA}: {An}
@@ -110,19 +132,6 @@ M.~Tan, R.~Pang, and Q.~V. Le, ``{EfficientDet}: {Scalable} and efficient
   object detection,'' in {\em IEEE/CVF Conference on Computer Vision and
   Pattern Recognition (CVPR)}, 2020.
 
-\bibitem{yolov8}
-G.~Jocher, A.~Chaurasia, and J.~Qiu, ``Ultralytics {YOLOv8},'' 2023.
-
-\bibitem{sort_tracker}
-A.~Bewley, Z.~Ge, L.~Ott, F.~Ramos, and B.~Upcroft, ``Simple online and
-  realtime tracking,'' in {\em IEEE International Conference on Image
-  Processing (ICIP)}, 2016.
-
-\bibitem{frenet_planner}
-M.~Werling, J.~Ziegler, S.~Kammel, and S.~Thrun, ``Optimal trajectory
-  generation for dynamic street scenarios in a {Frenet} frame,'' {\em IEEE
-  International Conference on Robotics and Automation (ICRA)}, 2010.
-
 \bibitem{rrt_star}
 S.~Karaman and E.~Frazzoli, ``Sampling-based algorithms for optimal motion
   planning,'' {\em The International Journal of Robotics Research}, vol.~30,
@@ -133,10 +142,5 @@ D.~Dolgov, S.~Thrun, M.~Montemerlo, and J.~Diebel, ``Practical search
   techniques in {Path Planning} for {Autonomous Driving},'' {\em Annals of
   Mathematics and Artificial Intelligence}, vol.~52, no.~2-4, pp.~207--226,
   2008.
-
-\bibitem{pid_control}
-G.~F. Franklin, J.~D. Powell, and A.~Emami-Naeini, {\em Feedback Control of
-  Dynamic Systems}.
-\newblock Pearson, 2019.
 
 \end{thebibliography}

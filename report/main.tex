@@ -15,7 +15,7 @@
 \usepackage{booktabs}       % For professional-looking tables
 \usepackage{longtable}      % For tables that span multiple pages
 \usepackage{float}          % For controlling float positions
-\usepackage{array}          % For advanced table options
+\usepackage{array}          % For advanmain ced table options
 \usepackage{subfigure}
 \usepackage{multirow}
 \usepackage{multicol}
@@ -71,27 +71,35 @@
 \pagenumbering{arabic}
 
 \begin{titlepage}
+\begin{tikzpicture}[remember picture, overlay]
+  \draw[thick] ($(current page.north west) + (2cm, -2cm)$) rectangle ($(current page.south east) + (-2cm, 2cm)$);
+\end{tikzpicture}
+
 \begin{center}
+    {\small 
+    UNIVERSITY OF SCIENCE AND TECHNOLOGY OF HANOI \\
+    \textbf{DEPARTMENT OF INFORMATION AND COMMUNICATION TECHNOLOGY} 
+    } \\[1.5cm]
+
     % USTH Logo
-    \includegraphics[width=0.6\linewidth]{/mnt/storage/pylot/report/images/usth.png} \\[1.5 cm]
+    \includegraphics[width=0.45\linewidth]{/mnt/storage/pylot/report/images/usth.png} \\[1.5cm]
 
-    % University Name
-    {\Huge \textbf{University of Science and Technology of Hanoi}} \\[1cm]
+    {\Huge \textbf{BACHELOR THESIS}}\\[1.5cm]
 
-    % Report Title
-    {\huge \bfseries \uppercase{BACHELOR THESIS}}\\[1cm]
+    {\Large By} \\[0.5cm]
+    {\Large Nguyen Khanh Linh - 22BA13193} \\[1cm]
 
-    % Student Information
-    {\large  \textbf{Student} Nguyen Khhanh Linh - 22BA13193} \\[0.5cm]
-    {\large  \textbf{Supervisors} Msc. Le Nhu Chu Hiep}  \\[0.5cm]
-    % Project Title
-    \rule{\linewidth}{0.3mm} \\[0.7cm]
-    {\Huge \bfseries\color{blue} Autonomous Driving Car using Modular System Method }\\[0.7cm]
-    \rule{\linewidth}{0.3mm} \\[4cm]
-
-    % Academic Year
-    {\large Academic Year: 2022-2026}
+    {\Large Title:} \\[0.5cm]
+    {\huge \textbf{\uppercase{Autonomous Driving Car using}} \\[0.5cm] 
+    \textbf{\uppercase{Modular System Method}}} \\[2cm]
     
+    {\Large
+    \begin{tabular}{rl}
+        Supervisor: & Msc. Le Nhu Chu Hiep \\
+    \end{tabular}
+    } \\[3cm]
+
+    {\Large \textbf{Hanoi, June -- 2026}}
 \end{center}
 \end{titlepage}
 \clearpage
@@ -108,7 +116,6 @@
 % List of Tables
 \listoftables
 \addcontentsline{toc}{chapter}{List of Table}
-\clearpage
 
 \printglossary[type=\acronymtype,title=List of Abbreviations]
 \addcontentsline{toc}{chapter}{List of Abbreviations}
@@ -160,24 +167,34 @@ The experimental results show that the modular approach enables rapid debugging 
 \section{Context and motivation}
 \label{sec:context}
 \subsection{Context}
-In the 90s, after cars is evented and become a must-have vehicle for every household, science fiction books and movies were trying to illustrate how a car could operate by its own in the far far futures. Nowadays, with the imrpovement in Computer Science, Machine Learning and Deep Learning, human are making these dream come true. The earliest neural network for road segmentation called ALVINN (Autonomous Land Vehicle In a Neural Network) by Dean A. Pomerleau, which g ,Autonomous vehicles (AVs) have transitioned from a futuristic vision to a rapidly advancing reality, driven by breakthroughs in computer vision, deep learning, and robotic control. However, deploying reliable autonomous driving software on physical vehicles remains extremely challenging due to safety-critical constraints, dynamic environments, and the need for real-time processing.
+In the 90s, after cars were invented and became popular for every household, science fiction books and movies were trying to illustrate how a car could operate by itself in the far future. Nowadays, with significant improvements in Computer Science, Machine Learning and Deep Learning, humans are making the dream come true. From the simplest neural network for road segmentation called ALVINN (Autonomous Land Vehicle In a Neural Network)~\cite{alvinn1989} by Dean A. Pomerleau, Autonomous vehicles (AVs) have developed from movie magic to fully functional autonomous vehicles, driven by innovation in computer vision, deep learning, and robotic control. However, deploying safe, reliable and fully automatic autonomous driving software on physical vehicles remains extremely challenging due to safety-critical constraints, dynamic environments, and the need for real-time processing.
 
-Autonomous driving architectures are broadly split into end-to-end approaches and modular pipelines. While end-to-end deep learning maps sensor inputs directly to actuation commands, it lacks explainability and safety guarantees. Consequently, the modular system method remains the industry standard. A modular system partitions the driving task into specialized, sequential tasks:
+Two main approaches for Autonomous driving architectures are end-to-end approaches and modular pipelines. While end-to-end deep learning maps sensor inputs directly to a single program which is responsible for sticking to lanes, detecting surroundings, making decisions, handling surprise situations and controlling vehicles, it lacks explainability and safety guarantees. A modular system pipeline divides the load to multiple sequential tasks:
 \begin{enumerate}
-    \item \textbf{Perception:} Converting raw sensor inputs (camera, LiDAR, GPS) into structured representations of the environment (e.g., 2D/3D bounding boxes for obstacles).
-    \item \textbf{Tracking:} Maintaining identities of detected obstacles across time frames.
-    \item \textbf{Prediction:} Extrapolating the future trajectory of other agents.
-    \item \textbf{Planning:} Computing a safe, collision-free trajectory to the destination.
+    \item \textbf{Perception:} Converting raw sensor inputs (camera, LiDAR, GPS) into structured representations of the environment.
+    \item \textbf{Tracking:} Keep track of detected obstacles across time frames.
+    \item \textbf{Prediction:} Predict the future trajectory of other agents.
+    \item \textbf{Planning:} Computing a safe, clear route to the destination.
     \item \textbf{Control:} Generating physical actuation (steering, throttle, brake) to execute the planned trajectory.
 \end{enumerate}
 
-Developing and testing these modules on real vehicles (such as the Lincoln MKZ) is expensive and highly risky. Thus, high-fidelity simulators like CARLA have become essential for evaluating modular stacks under diverse traffic scenarios.
+Developing and testing these modules on real vehicles (such as the Lincoln MKZ) is expensive and highly risky. Thus, high-fidelity simulators like CARLA have become standard for evaluating modular stacks under diverse traffic scenarios.
 
 \subsection{Problem Statement}
-In a modular autonomous driving stack, the overall safety and efficiency of the ego-vehicle are heavily dependent on the performance of individual modules and their interactions. A major problem in such systems is error propagation: a failure in the perception module (e.g., misdetecting a pedestrian or a traffic light) propagates through tracking, prediction, and planning, eventually leading to a critical failure in control (e.g., a collision). Furthermore, coordinating these modules in real-time requires a highly efficient dataflow framework that minimizes latency, manages data synchronization, and ensures deterministic execution.
+In a modular autonomous driving stack, the overall safety and efficiency of the ego-vehicle (The vehicle the pipeline controlling) are heavily dependent on the performance of individual modules and their interactions. A major problem in such systems is error propagation: a failure in the perception module (e.g., misdetecting a pedestrian or a traffic light) propagates through tracking, prediction, and planning, eventually leading to a critical failure in control (e.g., a collision). Furthermore, coordinating these modules in real-time requires a highly efficient dataflow framework that minimizes latency, manages data synchronization, and ensures smooth execution.
 
 \subsection{Motivation}
-This research is motivated by the need to understand, build, and evaluate a robust, modular autonomous driving stack. Using Pylot—a platform that relies on the ERDOS dataflow system—allows us to build a graph of operators where streams of data flow asynchronously yet deterministically. By utilizing CARLA, we can systematically test the modular pipeline under identical environmental conditions, analyze the trade-offs of running perfect (ground-truth) vs. visual-perception-based modules (such as YOLOv8 obstacle detection), and evaluate the overall driving policy.
+This research is motivated by the need to understand, build, and evaluate a robust, modular autonomous driving pipeline. Using Pylot — a platform that relies on the ERDOS dataflow system, which allows us to build a graph of operators where data-stream flow asynchronously and accurately. By utilizing CARLA, we can test the modular pipeline under identical environmental conditions, analyze the trade-offs of running perfect (ground-truth) vs. visual-perception-based modules (such as YOLOv8 obstacle detection), and evaluate the overall driving results.
+
+\section{Related Work}
+\label{sec:related_work}
+The development of autonomous driving systems has sped up drastically within several decades. Early efforts in the 1980s, such as the Carnegie Mellon Navlab~\cite{thorpe1988} and the VaMP system~\cite{dickmanns1994, dickmanns1986}, relied on traditional computer vision and early control strategies. Pomerleau's ALVINN~\cite{alvinn1989} demonstrated one of the first uses of neural networks for road following.
+
+Modern autonomous driving architectures can largely be divided into modular and end-to-end approaches. The modular paradigm separates the driving task into discrete components like perception, planning, and control~\cite{wang2023}. In perception, advancements in deep learning models such as AlexNet~\cite{alexnet2012}, ResNet~\cite{resnet2016}, and YOLO~\cite{yolo2016} have provided excellent real-time object detection, while 3D perception has advanced with methods like MV3D~\cite{mv3d2017}. The nuScenes dataset~\cite{nuscenes2020} has further standardized the evaluation of these modular components.
+
+In addition, end-to-end driving models by Bojarski et al.~\cite{bojarski2016} and Levine et al.~\cite{levine2016} train a single neural network to map raw sensor inputs directly to control commands~\cite{xu2017}. While these methods have found ways to incorporate deep reinforcement learning~\cite{aradi2020} and vision transformers~\cite{swin2021}, they face challenges with interpretability~\cite{bojarski2019} and suffer from limitations in behavior cloning~\cite{codevilla2019}.
+
+Recent works have found ways to improve planning-oriented models like UniAD~\cite{uniad2023} and the deployment of Foundation Models~\cite{wu2025}. Our work builds upon the reliable modular architecture standard, using the Pylot framework~\cite{erdos_pylot} to integrate a custom YOLO detection pipeline.
 
 \section{Thesis Objective} 
 \label{sec: obj}
@@ -198,31 +215,32 @@ The remainder of this thesis is structured as follows:
 
 \chapter{Background}
 
-This chapter details the foundation of the Pylot autonomous vehicle stack and its components. Pylot is built on top of the ERDOS dataflow system and executes inside the CARLA simulation environment. The core modules of the pipeline include perception, tracking, prediction, planning, and control.
+This chapter introduces the general information of the Pylot autonomous vehicle stack and its components. Pylot is built on top of the ERDOS dataflow system and executes inside the CARLA simulation environment. The core modules of the pipeline include perception, tracking, prediction, planning, and control.
+
 
 \section{Autonomous Driving Architectures}
 \label{sec:architectures}
 Autonomous driving systems typically follow either an end-to-end learning paradigm or a modular system architecture. 
-Modular system architectures break down the autonomous driving pipeline into specialized modules such as perception, tracking, prediction, planning, and control. This design has become the industry standard because it provides safety guarantees, enables explainability of decisions, and allows independent verification and validation of each component. 
+Modular system architectures break down the autonomous driving pipeline into specialized modules such as perception, tracking, prediction, planning, and control. This design has become the industry standard because it provides safety guarantees while providing ground-truth information to asset the pipeline performance, as well as allows independent verification and validation of each component. 
 
-Pylot~\cite{erdos_pylot} is a modular autonomous vehicle platform designed to facilitate developing and testing these individual components. It utilizes the ERDOS dataflow engine to model the autonomous driving pipeline as a directed graph of operators connected by data streams.
+Pylot~\cite{erdos_pylot} is a modular autonomous vehicle platform designed for developing and testing these individual components. It utilizes the ERDOS dataflow engine to model the autonomous driving pipeline as a directed graph of operators connected by data streams.
 
 \subsection{ERDOS Dataflow Engine}
-In modular autonomous vehicle stacks, latency and data synchronization are critical. Autonomous vehicles generate high-frequency sensor streams (e.g., cameras at 30 Hz, LiDAR at 10 Hz), and processing operators have varying runtimes. Chaining these operators requires a system that manages latency, avoids starvation, and preserves determinism.
+In modular autonomous vehicle pipeline, latency and data synchronization are crucial. Autonomous vehicles generate high-frequency sensor streams (e.g., cameras at 30 Hz, LiDAR at 10 Hz), and processing operators have varying runtimes. Connecting these operators requires a system that manages latency and consistency.
 
-ERDOS addresses these challenges using a dataflow paradigm. In ERDOS, each component is implemented as an \textit{operator} that receives data via input streams and publishes data to output streams. Streams are typed and convey messages containing data, timestamps, and watermarks:
+ERDOS addresses these challenges using a dataflow paradigm. In ERDOS, each component is implemented as an \textit{operator} that receives data via input streams and publishes data to output streams. Streams contain data, timestamps, and watermarks:
 \begin{itemize}
     \item \textbf{Timestamps}: Indicate the simulated or real-world time at which the sensor data was captured.
-    \item \textbf{Watermarks}: A control message indicating that no further messages with a timestamp less than or equal to the watermark will be sent on that stream. Operators use watermarks to safely process data deterministically, ensuring that downstream planners and controllers do not act on incomplete or out-of-order perception data.
+    \item \textbf{Watermarks}: A control message indicating that no further messages with a timestamp less than or equal to the watermark will be sent on that stream. Operators use watermarks to safely process data, ensuring that downstream planners and controllers do not act on incomplete or out-of-order perception data.
 \end{itemize}
 
 \subsubsection{Comparison with Traditional Middlewares}
-Most contemporary autonomous vehicles rely on the Robot Operating System (ROS) as their primary middleware. ROS 1 utilizes a loosely coupled publisher-subscriber model with a centralized master node (roscore) and communicates via TCP/UDP sockets. While flexible, this model introduces significant serialization and deserialization overhead, which severely bottlenecks high-frequency, high-bandwidth sensor streams such as uncompressed 4K video or dense LiDAR point clouds. ROS 2 attempted to rectify this by migrating to the Data Distribution Service (DDS) standard, offering Quality of Service (QoS) policies, but it still struggles with deterministic execution. In ROS, a node receiving data from multiple sensors at different frequencies (e.g., a 30 Hz camera and a 10 Hz LiDAR) must manually manage message synchronization policies (e.g., \texttt{message\_filters} in ROS), which often leads to dropped messages or processing of temporally misaligned data.
+Most contemporary autonomous vehicles rely on the Robot Operating System (ROS) as their primary middleware. ROS 1 utilizes a loosely coupled publisher-subscriber model with a centralized master node (roscore) and communicates via TCP/UDP sockets. While flexible, this model introduces significant serialization and deserialization overhead, which severely bottlenecks high-frequency, high-bandwidth sensor streams such as camera captures traffic jams or dense LiDAR point clouds. ROS 2 attempted to rectify this by migrating to the Data Distribution Service (DDS) standard, offering Quality of Service (QoS) policies, but it still struggles with decisive execution. In ROS, a node receiving data from multiple sensors at different frequencies (e.g., a 30 Hz camera and a 10 Hz LiDAR) must manually manage message synchronization policies (e.g., \texttt{message\_filters} in ROS), which often leads to dropped messages or processing of temporally misaligned data.
 
-ERDOS mitigates these hardware and synchronization bottlenecks through zero-copy communication. When two ERDOS operators reside on the same physical machine, they exchange data by passing pointers to shared memory regions, entirely bypassing the network stack and serialization overhead. Furthermore, the watermark-driven execution model inherently reduces the autonomous driving pipeline to a Kahn Process Network (KPN)~\cite{kahn_process}. In a KPN, operators are deterministic sequential processes that communicate exclusively through unbounded FIFO channels. Because execution is strictly gated by the arrival of watermarks, ERDOS guarantees that the autonomous vehicle will produce the exact same sequence of actuation commands given the same sequence of sensor inputs, regardless of operating system thread scheduling or hardware load. This output-determinism is invaluable for reproducing edge-case crashes and systematically debugging the latency-accuracy tradeoff.
+To tackle this problem, ERDOS mitigates these hardware and synchronization bottlenecks through zero-copy communication. When two ERDOS operators reside on the same physical machine, they exchange data by passing pointers to shared memory regions, entirely bypassing the network stack and serialization overhead. Furthermore, the watermark-driven execution model inherently reduces the autonomous driving pipeline to a Kahn Process Network (KPN)~\cite{kahn_process}. In a KPN, operators are deterministic sequential processes that communicate exclusively through unbounded FIFO channels. Because execution is strictly gated by the arrival of watermarks, ERDOS guarantees that the autonomous vehicle will produce the exact same sequence of actuation commands given the same sequence of sensor inputs, regardless of operating system thread scheduling or hardware load. This output-determinism is invaluable for reproducing edge-case crashes and systematically debugging the latency-accuracy tradeoff.
 
 \subsection{CARLA Simulator Architecture}
-Testing modular stacks on physical cars is expensive and safety-critical. The CARLA simulator~\cite{carla_sim} is an open-source, high-fidelity urban driving simulator built on Unreal Engine 4 (UE4). CARLA provides a simulated physics engine, realistic weather and lighting conditions, dynamic obstacles (vehicles, pedestrians), and detailed maps (Town01 through Town05, etc.) containing lanes, traffic lights, and road layouts. 
+Testing modular stacks on physical cars is expensive and dangerous. The CARLA simulator~\cite{carla_sim} is an open-source, high-quality urban driving simulator built on Unreal Engine 4 (UE4). CARLA provides a simulated physics engine, realistic weather and lighting conditions, dynamic obstacles (vehicles, pedestrians), and detailed maps (Town01 through Town05, etc.) containing lanes, traffic lights, and road layouts. 
 
 CARLA is engineered around a scalable client-server architecture. The server is responsible for rendering the 3D environment, computing the rigid body physics of the vehicles, updating the behavior of non-player characters (NPCs) via the Traffic Manager, and computing the intersections of sensor raycasts. The client (in this case, the Pylot framework) connects to the server via a TCP/IP API to retrieve sensor data and dispatch control commands. 
 
@@ -234,7 +252,7 @@ Pylot interfaces directly with CARLA's extensive sensor suite. The RGB cameras s
 
 \section{Perception Module}
 \label{sec:perception}
-The perception module is the initial stage of the modular autonomous driving stack. According to the Pylot paper~\cite{erdos_pylot}, this component comprises operators that process camera and LiDAR data to detect, and localize objects, lanes, and traffic lights. These operators communicate their results via an \texttt{ObstacleMessage} that contains the bounding box of the detected object along with the confidence score returned by the ML model.
+The perception module is the initial stage of the modular autonomous driving stack. According to the Pylot paper~\cite{erdos_pylot}, this component comprises operators that process camera and LiDAR data to detect and localize objects, lanes, and traffic lights. These operators communicate their results via an \texttt{ObstacleMessage} that contains the bounding box of the detected object along with the confidence score returned by the ML model.
 \begin{itemize}
     \item \textbf{Role}: To interpret raw sensor data from the environment and output structured, localized descriptions of obstacles (bounding boxes).
     \item \textbf{Inputs}: Raw camera images (RGB), depth maps (for 3D coordinate projection), and camera calibration parameters (intrinsic and extrinsic matrices).
@@ -265,7 +283,7 @@ The feature extraction backbone of YOLOv8 is an enhanced version of CSPDarknet53
 The neck of the network utilizes a Path Aggregation Network (PANet) topology. While traditional FPNs only pass semantic information top-down, PANet introduces an additional bottom-up path augmentation. This bidirectional flow ensures that strong localization features from lower layers are efficiently propagated to the higher semantic layers, which is absolutely critical for accurately detecting small obstacles like pedestrians at long distances in the CARLA simulator.
 
 \subsubsection{Data Augmentation Strategies}
-To ensure the robustness of the YOLOv8 detector within the CARLA environment, extensive data augmentation strategies are employed during training. The most prominent technique is \textbf{Mosaic Augmentation}, which combines four distinct training images into a single composite mosaic. This drastically increases the variance of object scales and contexts within a single batch, forcing the model to learn scale-invariant features. Furthermore, it naturally mitigates the class imbalance problem by combining images with sparse objects (e.g., pedestrians) and dense objects (e.g., vehicles). In addition to Mosaic, the training pipeline utilizes \textbf{MixUp} augmentation, which blends two images and their corresponding labels via linear interpolation. This encourages the model to learn linear behavior between training examples, improving its generalization to unseen environmental conditions such as rain, fog, or night driving. Random affine transformations, including scaling, translation, and shearing, are also applied to artificially expand the geometric diversity of the CARLA dataset.
+To ensure the robustness of the YOLOv8 detector within the CARLA environment, extensive data augmentation strategies are employed during training. The best technique is \textbf{Mosaic Augmentation}, which combines four distinct training images into a single composite mosaic. This drastically increases the variance of object scales and contexts within a single batch, forcing the model to learn scale-invariant features. Furthermore, it naturally mitigates the class imbalance problem by combining images with sparse objects (e.g., pedestrians) and dense objects (e.g., vehicles). In addition to Mosaic, the training pipeline utilizes \textbf{MixUp} augmentation, which blends two images and their corresponding labels via linear interpolation. This encourages the model to learn linear behavior between training examples, improving its generalization to unseen environmental conditions such as rain, fog, or night driving. Random affine transformations, including scaling, translation, and shearing, are also applied to artificially expand the geometric diversity of the CARLA dataset.
 
 \begin{figure}[H]
 \centering
@@ -289,7 +307,7 @@ To ensure the robustness of the YOLOv8 detector within the CARLA environment, ex
     \draw [line] (decoupled.east) -- +(0.4,0) |- (cls.west);
     \draw [line] (decoupled.east) -- +(0.4,0) |- (reg.west);
 \end{tikzpicture}
-\caption{YOLOv8 Single-Stage Object Detection Pipeline Architecture.}
+\caption{YOLOv8 Single-Stage Object Detection Pipeline Architecture~\cite{yolov8}.}
 \label{fig:yolov8_arch}
 \end{figure}
 
@@ -325,8 +343,8 @@ The flow diagram of SORT is illustrated in Figure~\ref{fig:sort_flow}.
 \centering
 \begin{tikzpicture}[>=stealth, thick]
     \tikzset{
-        processstep/.style={draw, fill=blue!5, rectangle, minimum height=2.5em, minimum width=8.5em, rounded corners, align=center, font=\small},
-        decision/.style={draw, fill=yellow!10, diamond, aspect=2, minimum width=8em, align=center, font=\small},
+        processstep/.style={draw, fill=blue!5, rectangle, minimum height=2.5em, minimum width=6.5em, rounded corners, align=center, font=\small},
+        decision/.style={draw, fill=yellow!10, diamond, aspect=2, minimum width=6.5em, align=center, font=\small},
         line/.style={draw, ->, >=stealth, thick}
     }
     \node [processstep] (det) {New Frame Detections\\$(u, v, s, r, c)$};
@@ -352,7 +370,7 @@ The flow diagram of SORT is illustrated in Figure~\ref{fig:sort_flow}.
     \draw [line] (age_check.west) -- node[above, font=\small] {Yes} (delete.east);
     \draw [line] (age_check.south) -- node[right, font=\small] {No} (keep.north);
 \end{tikzpicture}
-\caption{SORT Obstacle Tracking Workflow.}
+\caption{SORT Obstacle Tracking Workflow~\cite{sort_tracker}.}
 \label{fig:sort_flow}
 \end{figure}
 
@@ -425,20 +443,20 @@ Figure~\ref{fig:linear_prediction} illustrates this least-squares linear predict
     \draw[->] (0,-1) -- (0,5) node[above] {$Y$ (World)};
     
     % Draw historical points (crosses/dots)
-    \filldraw[red] (-4, 0.5) circle (3pt) node[below] {$t_{-3}$};
+    \filldraw[red] (-4, 0.5) circle (3pt) node[above left] {$t_{-3}$};
     \filldraw[red] (-2.5, 1.2) circle (3pt) node[below] {$t_{-2}$};
     \filldraw[red] (-1.0, 1.9) circle (3pt) node[below] {$t_{-1}$};
-    \filldraw[red] (0.5, 2.6) circle (3pt) node[below] {$t_{0}$ (Current)};
+    \filldraw[red] (0.5, 2.6) circle (3pt) node[below right] {$t_{0}$ (Current)};
     
     % Draw regression line
     \draw[blue, thick, dashed] (-5, 0.03) -- (4.5, 4.47);
-    \node[blue, above left] at (3.5, 4.0) {Fitted Line};
+    \node[blue, below right] at (4.0, 4.23) {Fitted Line};
     
     % Draw future prediction points
-    \filldraw[green!60!black] (2.0, 3.3) circle (3pt) node[above left] {$t_{+1}$ (Predicted)};
+    \filldraw[green!60!black] (2.0, 3.3) circle (3pt) node[below right] {$t_{+1}$ (Predicted)};
     \filldraw[green!60!black] (3.5, 4.0) circle (3pt) node[above left] {$t_{+2}$};
 \end{tikzpicture}
-\caption{Linear Trajectory Prediction Fitting and Extrapolation.}
+\caption{Linear Trajectory Prediction Fitting and Extrapolation~\cite{erdos_pylot}.}
 \label{fig:linear_prediction}
 \end{figure}
 
@@ -471,31 +489,31 @@ The Frenet Optimal Trajectory planner~\cite{frenet_planner} evaluates candidate 
 \centering
 \begin{tikzpicture}[>=stealth, scale=0.9, thick]
     % Cartesian axes
-    \draw[->, gray, thin] (-1,-1) -- (3,-1) node[right, black] {$X$};
-    \draw[->, gray, thin] (-1,-1) -- (-1,3) node[above, black] {$Y$};
+    \draw[->, gray, thin] (-1,-1) -- (8.5,-1) node[right, black] {$X$};
+    \draw[->, gray, thin] (-1,-1) -- (-1,3.5) node[above, black] {$Y$};
     
     % Reference centerline curve
     \draw[blue, ultra thick] (0,0) to[out=30, in=150] (4,1) to[out=-30, in=200] (8,0.5);
     \node[blue, above] at (8,0.5) {Reference Path (s-axis)};
     
     % Vehicle position
-    \filldraw[black] (3.2, 1.8) circle (4pt) node[above right] {Vehicle $(x, y)$};
+    \filldraw[black] (2.76, 2.0) circle (4pt) node[above left] {Vehicle $(x, y)$};
     
     % Projection point on reference path
-    \filldraw[red] (3.0, 0.8) circle (3pt) node[below] {$P_R(s)$};
+    \filldraw[red] (3.0, 0.8) circle (3pt) node[below right] {$P_R(s)$};
     
     % Tangent and Normal vectors at PR
-    \draw[->, red, very thick] (3.0, 0.8) -- (3.8, 0.95) node[right] {$\vec{t}$};
-    \draw[->, red, very thick] (3.0, 0.8) -- (2.8, 1.8) node[left] {$\vec{n}$};
+    \draw[->, red, very thick] (3.0, 0.8) -- (3.8, 0.96) node[below right] {$\vec{t}$};
+    \draw[->, red, very thick] (3.0, 0.8) -- (2.84, 1.6) node[left] {$\vec{n}$};
     
     % Projection line representing d
-    \draw[dashed, black] (3.0, 0.8) -- (3.2, 1.8);
-    \node[right] at (3.1, 1.3) {$d$ (Lateral)};
+    \draw[dashed, black] (3.0, 0.8) -- (2.76, 2.0);
+    \node[right] at (2.95, 1.6) {$d$ (Lateral)};
     
     % Longitudinal coordinate s
-    \node[blue, below] at (1.0, 0.2) {$s$ (Longitudinal)};
+    \node[blue, below] at (1.5, 0.0) {$s$ (Longitudinal)};
 \end{tikzpicture}
-\caption{Frenet Frame Coordinate System representing longitudinal distance $s$ and lateral displacement $d$.}
+\caption{Frenet Frame Coordinate System representing longitudinal distance $s$ and lateral displacement $d$~\cite{frenet_planner}.}
 \label{fig:frenet_frame}
 \end{figure}
 
@@ -544,7 +562,7 @@ As described in the Pylot architecture~\cite{erdos_pylot}, the control module re
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[>=stealth, thick]
+\begin{tikzpicture}[>=stealth, thick, scale=0.85, transform shape]
     \tikzset{
         block/.style={draw, fill=blue!5, rectangle, minimum height=2em, minimum width=4.5em, rounded corners, align=center, font=\small},
         sum/.style={draw, fill=blue!10, circle, minimum size=1.5em},
@@ -552,17 +570,19 @@ As described in the Pylot architecture~\cite{erdos_pylot}, the control module re
     }
     \node (ref) {Reference $y_{\text{ref}}$};
     \node [sum, right=1.2cm of ref] (sum) {$+$};
-    \node [block, right=1.2cm of sum, yshift=1.2cm] (p) {$K_p$};
-    \node [block, right=1.2cm of sum] (i) {$K_i \int$};
-    \node [block, right=1.2cm of sum, yshift=-1.2cm] (d) {$K_d \frac{d}{dt}$};
+    \node [block, right=2.2cm of sum, yshift=1.2cm] (p) {$K_p$};
+    \node [block, right=2.2cm of sum] (i) {$K_i \int$};
+    \node [block, right=2.2cm of sum, yshift=-1.2cm] (d) {$K_d \frac{d}{dt}$};
     \node [sum, right=1.2cm of i] (sum2) {$+$};
     \node [block, right=1.2cm of sum2] (plant) {Plant\\(CARLA Simulator)};
     \node [right=1.2cm of plant] (out) {Output $y(t)$};
     
     \path [line] (ref) -- (sum);
-    \path [line] (sum) -- +(0.8,0) |- (p.west);
-    \path [line] (sum.east) -- node[above, near start] {$e(t)$} (i.west);
-    \path [line] (sum) -- +(0.8,0) |- (d.west);
+    \coordinate (branch1) at ($(sum.east) + (1.2, 0)$);
+    \draw [thick] (sum.east) -- node[above] {$e(t)$} (branch1);
+    \path [line] (branch1) |- (p.west);
+    \path [line] (branch1) -- (i.west);
+    \path [line] (branch1) |- (d.west);
     
     \path [line] (p.east) -| (sum2);
     \path [line] (i.east) -- (sum2);
@@ -575,7 +595,7 @@ As described in the Pylot architecture~\cite{erdos_pylot}, the control module re
     \draw [line] (plant.east) -- +(0.8,0) |- +(0,-2.5) -| (sum.south);
     \node at (sum.south west) {$-$};
 \end{tikzpicture}
-\caption{Proportional-Integral-Derivative (PID) Controller Feedback Loop.}
+\caption{Proportional-Integral-Derivative (PID) Controller Feedback Loop~\cite{pid_control}.}
 \label{fig:pid_loop}
 \end{figure}
 
@@ -693,7 +713,7 @@ The autonomous driving stack is constructed as a directed acyclic graph (DAG) of
         
         % Perception to Downstream
         \draw [line] (proj.east) -- node[io, rotate=90] {3D BBoxes} (sort.west);
-        \draw [line] (lane.south) |- (8.5, -7.5) |- node[io, near end] {Lane Boundaries} ($(plan.west) + (0,-10pt)$);
+        \draw [line] (lane.south) |- node[io, pos=0.8] {Lane Boundaries} (8.5, -7.5) |- ($(plan.west) + (0,-10pt)$);
         
         % Downstream connections
         \draw [line] (sort.east) -- node[io, rotate=90] {Tracked States} (pred.west);
@@ -705,7 +725,10 @@ The autonomous driving stack is constructed as a directed acyclic graph (DAG) of
         
     \end{tikzpicture}
     }
-    \caption{Detailed Modular Autonomous Driving Dataflow Pipeline. The custom Perception module (green dashed box) highlights our trained YOLOv8 model and traditional lane detection pipeline, explicitly defining inputs and outputs between modules.}
+    \vspace{1ex}
+    
+    {\small \textit{*Note: The custom Perception module (green dashed box) highlights our trained YOLOv8 model and traditional lane detection pipeline, explicitly defining inputs and outputs between modules.}}
+    \caption{Detailed Modular Autonomous Driving Dataflow Pipeline.}
     \label{fig:pylot_diagram}
 \end{figure}
 
@@ -741,7 +764,7 @@ where $\rho$ is the perpendicular distance from the origin to the line, and $\th
 
 In the Hough Transform, every edge pixel $(x_i, y_i)$ maps to a sinusoidal curve in the $(\rho, \theta)$ parameter space (the Hough space). If multiple edge pixels lie on the same straight line in the image, their corresponding sinusoidal curves will intersect at a single point $(\rho_0, \theta_0)$ in the Hough space. The algorithm discretizes the Hough space into a 2D accumulator array. For every edge pixel, it iterates through all possible values of $\theta$, calculates the corresponding $\rho$, and increments the vote in the accumulator array at bin $(\rho, \theta)$.
 
-After processing all edge pixels, the local maxima in the accumulator array (bins with the highest number of votes) correspond to the most prominent straight lines in the image. We filter these lines based on acceptable slope angles (rejecting perfectly horizontal lines to ignore crosswalks or horizons) to isolate the left and right ego-lane boundaries. These boundaries are then parameterized as polynomial splines and streamed to the Waypoint Planning module, which uses them to enforce lateral boundary constraints and compute the cross-track error for the lateral PID controller.
+After processing all edge pixels, the local maxima in the accumulator array (bins with the highest number of votes) correspond to the best straight lines in the image. We filter these lines based on acceptable slope angles (rejecting perfectly horizontal lines to ignore crosswalks or horizons) to isolate the left and right ego-lane boundaries. These boundaries are then parameterized as polynomial splines and streamed to the Waypoint Planning module, which uses them to enforce lateral boundary constraints and compute the cross-track error for the lateral PID controller.
 
 \section{Perception Streamlining via YOLOv8}
 \label{sec:perception_streamlining}
@@ -754,11 +777,11 @@ To acquire a representative dataset of dynamic obstacles under various traffic a
 \begin{itemize}
     \item \textbf{Deterministic Synchronous Clock}: The simulator is run with a fixed time step using the flags \texttt{-benchmark} and \texttt{-fps=10} (10 frames per second). This ensures that the simulation runs at a constant rate, and every sensor frame is recorded sequentially without dropping frames due to host rendering latency.
     \item \textbf{Offscreen Headless Rendering}: We set \texttt{SDL\_VIDEODRIVER=offscreen} to execute the simulator inside a headless frame buffer. This avoids the GPU overhead of rendering the 3D window on the display server, maximizing resource allocation for camera projection, data extraction, and logging operations.
-    \item \textbf{Multi-Map Diversity}: The data collection script \texttt{collect\_yolo\_data.sh} automates runs across five CARLA environments: \texttt{Town01}, \texttt{Town02}, \texttt{Town03}, \texttt{Town04}, and \texttt{Town05}. This ensures diversity in road topologies, building placements, intersection designs, and lane widths.
+    \item \textbf{Multi-Map Diversity}: The data collection script automates runs across five CARLA environments: \texttt{Town01}, \texttt{Town02}, \texttt{Town03}, \texttt{Town04}, and \texttt{Town05}. This ensures diversity in road topologies, building placements, intersection designs, and lane widths.
     \item \textbf{Spawn Point Configuration}: For each town, we configure two distinct starting positions (spawn point 0 and spawn point 25). This generates 10 unique routing configurations, allowing Pylot to interact with different dynamic scenarios and layouts.
 \end{itemize}
 
-During each collection run of 1800 seconds (30 minutes), the Pylot dataflow operator \texttt{data\_gatherer.py} records camera images from the center RGB camera at $1280 \times 720$ resolution alongside ground-truth 3D bounding boxes extracted directly from CARLA's internal actor states. Figure~\ref{fig:sample_grid} illustrates sample images collected across these simulation environments.
+During each collection run of 1800 seconds (30 minutes), the Pylot data gathering operator records camera images from the center RGB camera at $1280 \times 720$ resolution alongside ground-truth 3D bounding boxes extracted directly from CARLA's internal actor states. Figure~\ref{fig:sample_grid} illustrates sample images collected across these simulation environments.
 
 \begin{figure}[H]
 \centering
@@ -770,18 +793,21 @@ During each collection run of 1800 seconds (30 minutes), the Pylot dataflow oper
     \subfigure[Town03 (Spawn Point 20)]{\includegraphics[width=0.3\linewidth]{images/t3_sp20.png}}
     \subfigure[Town05 (Spawn Point 1)]{\includegraphics[width=0.3\linewidth]{images/t5_sp1.png}}
     \subfigure[Town05 (Spawn Point 20)]{\includegraphics[width=0.3\linewidth]{images/t5_sp20.png}}
-\caption{Image grid representing center RGB camera frames collected from the CARLA simulator across multiple town environments and vehicle spawn points.}
+    
+    \vspace{1ex}
+    {\small \textit{*Note: Frames were collected across multiple town environments and vehicle spawn points.}}
+\caption{Image grid representing center RGB camera frames collected from the CARLA simulator.}
 \label{fig:sample_grid}
 \end{figure}
 
 \subsection{Annotation Conversion and Model Training}
 The raw CARLA logging outputs must be converted into the format expected by the YOLO network. The processing pipeline consists of:
 \begin{enumerate}
-    \item \textbf{Coordinate Projection}: A script \texttt{convert\_carla\_to\_yolo.py} parses the logged object information. The ground-truth 3D bounding boxes are projected onto the 2D camera coordinates.
+    \item \textbf{Coordinate Projection}: A dedicated script parses the logged object information. The ground-truth 3D bounding boxes are projected onto the 2D camera coordinates.
     \item \textbf{YOLO Formatting}: The projected bounding box coordinates are converted into standard YOLO text labels. Each label file contains lines with the format: \texttt{<class\_id> <x\_center> <y\_center> <width> <height>}, where all spatial parameters are normalized relative to the image width and height.
     \item \textbf{Dataset Split}: The final dataset is shuffled and partitioned using ratios of 70\% for training, 20\% for validation, and 10\% for testing.
-    \item \textbf{Model Training Setup}: The model is trained starting from pre-trained \texttt{yolov8s.pt} weights. We train the network for 100 epochs with an input size of $640 \times 640$ pixels using \texttt{train\_yolo.py} on an NVIDIA GeForce RTX 3090 GPU. The final weights are saved as \texttt{best.pt}.
-    \item \textbf{Operator Integration}: The Pylot operator is configured to run this detector by specifying \texttt{--obstacle\_detector\_model=yolo} in the startup configurations.
+    \item \textbf{Model Training Setup}: The model is trained starting from pre-trained YOLOv8s weights. We train the network for 100 epochs with an input size of $640 \times 640$ pixels on an NVIDIA GeForce RTX 3090 GPU. The final optimized weights are then exported for inference.
+    \item \textbf{Operator Integration}: The Pylot perception module is configured to execute this customized YOLOv8 detector during the autonomous evaluation.
 \end{enumerate}
 
 \section{Lane Detection Pipeline}
@@ -813,15 +839,18 @@ where $(u, v)$ is the pixel coordinate, $(u_0, v_0)$ is the principal point, and
 This chapter details the performance of the streamlined Pylot pipeline. We present benchmarks comparing our single custom YOLOv8 detector against standard baselines and assess the closed-loop driving safety of the vehicle.
 
 \section{Experimental Setup}
-Outer environments were generated on a Linux server running Ubuntu 22.04 with an AMD Ryzen 7 4800H CPU and an NVIDIA GeForce RTX 3090 GPU. The software stack was deployed inside a Conda environment running Python 3.7. The CARLA simulator version 0.9.10.1 was used to run scenario benchmarks in Town01 and Town02 maps. 
+Outer environments were generated on a Linux server running Linux 7.1.1 with an Intel(R) Core(TM) i7-10850H CPU and an NVIDIA GeForce RTX 2080 MAX-Q GPU. The software stack was deployed inside a Conda environment running Python 3.7. The CARLA simulator version 0.9.10.1 was used to run scenario benchmarks in Town01,Town02 and Town03 maps. 
 
 \section{Object Detector Benchmarks}
-The training results from the training run (\texttt{runs/yolo\_carla/train/results.csv}) demonstrate that our custom YOLOv8s model achieves a validation precision of 95.2\%, a recall of 79.1\%, and a mean Average Precision (mAP@0.5) of 85.2\% (with mAP@0.5:0.95 reaching 70.1\%). Figure~\ref{fig:yolo_training_curves} visualizes the steady convergence of the training and validation losses, alongside the robust improvement in precision, recall, and mean Average Precision metrics over the 100 training epochs.
+The training results demonstrate that our custom YOLOv8s model achieves a validation precision of 95.2\%, a recall of 79.1\%, and a mean Average Precision (mAP@0.5) of 85.2\% (with mAP@0.5:0.95 reaching 70.1\%). Figure~\ref{fig:yolo_training_curves} visualizes the steady convergence of the training and validation losses, alongside the robust improvement in precision, recall, and mean Average Precision metrics over the 100 training epochs.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth]{images/yolo_training_curves.png}
-\caption{YOLOv8s Training Curves over 100 Epochs. Top row: Box Loss and Classification Loss convergence. Bottom row: Improvements in Precision, Recall, and Mean Average Precision (mAP).}
+\vspace{1ex}
+
+{\small \textit{*Note: Top row: Box Loss and Classification Loss convergence. Bottom row: Improvements in Precision, Recall, and Mean Average Precision (mAP).}}
+\caption{YOLOv8s Training Curves over 100 Epochs.}
 \label{fig:yolo_training_curves}
 \end{figure}
 
@@ -836,7 +865,7 @@ As shown in Table~\ref{tab:timely_ap_latency}, the Timely AP50 drops drastically
 \centering
 \begin{tabular}{lccc}
 \toprule
-\textbf{Speed (m/s)} & \textbf{AP50 @ 0ms Latency} & \textbf{AP50 @ 50ms Latency} & \textbf{AP50 @ 100ms Latency} \\
+\textbf{Speed (m/s)} & \textbf{AP50 (0ms)} & \textbf{AP50 (50ms)} & \textbf{AP50 (100ms)} \\
 \midrule
 10 & 0.013 & 0.011 & 0.005 \\
 15 & 0.002 & 0.000 & 0.000 \\
@@ -847,7 +876,10 @@ As shown in Table~\ref{tab:timely_ap_latency}, the Timely AP50 drops drastically
 40 & 0.000 & 0.000 & 0.000 \\
 \bottomrule
 \end{tabular}
-\caption{Timely AP50 metrics at varying speeds and injected latencies for the DynamicObjectCrossing scenario. Note that the absolute numbers represent the average over the entire 15-second simulation (including empty frames), highlighting the relative degradation caused by latency.}
+\vspace{1ex}
+
+{\small \textit{*Note: The absolute numbers represent the average over the entire 15-second simulation (including empty frames), highlighting the relative degradation caused by latency.}}
+\caption{Timely AP50 metrics at varying speeds and injected latencies for the DynamicObjectCrossing scenario.}
 \label{tab:timely_ap_latency}
 \end{table}
 
@@ -859,7 +891,7 @@ Our custom YOLOv8s model bridges this gap. When the object is fully visible and 
 \centering
 \begin{tabular}{lccc}
 \toprule
-\textbf{Model} & \textbf{Baseline AP50} & \textbf{Runtime (ms)} & \textbf{Timely AP50 at 40 m/s} \\
+\textbf{Model} & \textbf{Baseline AP50} & \textbf{Runtime (ms)} & \textbf{AP50 at 40 m/s} \\
 \midrule
 Faster R-CNN~\cite{erdos_pylot} & $\sim$0.75 & $\sim$100.0 & $\sim$0.00 \\
 YOLOv2~\cite{erdos_pylot} & $\sim$0.50 & $\sim$15.0 & $\sim$0.50 \\
@@ -867,7 +899,10 @@ YOLOv2~\cite{erdos_pylot} & $\sim$0.50 & $\sim$15.0 & $\sim$0.50 \\
 \textbf{YOLOv8s (Ours)} & \textbf{1.00} & \textbf{68.4} & \textbf{0.00} \\
 \bottomrule
 \end{tabular}
-\caption{Comparison of Latency Drift across perception models. Our YOLOv8s achieves the Perfect Detector baseline accuracy, completely isolating execution latency as the primary cause of bounding box drift.}
+\vspace{1ex}
+
+{\small \textit{*Note: Our YOLOv8s achieves the Perfect Detector baseline accuracy, completely isolating execution latency as the primary cause of bounding box drift.}}
+\caption{Comparison of Latency Drift across perception models.}
 \label{tab:model_drift_comparison}
 \end{table}
 
@@ -880,7 +915,7 @@ Table~\ref{tab:driving_metrics} details the metrics obtained from the evaluation
 \centering
 \begin{tabular}{lccccc}
 \toprule
-\textbf{Route ID} & \textbf{Length (m)} & \textbf{Completion (\%)} & \textbf{Penalty} & \textbf{Status} & \textbf{Composed Score (\%)} \\
+\textbf{Route ID} & \textbf{Len (m)} & \textbf{Comp. (\%)} & \textbf{Penalty} & \textbf{Status} & \textbf{Score (\%)} \\
 \midrule
 RouteScenario\_0  & 737.4  & 100.00 & 0.390 & Completed & 39.00 \\
 RouteScenario\_1  & 1128.3 & 100.00 & 0.639 & Completed & 63.89 \\
@@ -889,7 +924,10 @@ RouteScenario\_2  & 2628.1 & 100.00 & 0.600 & Completed & 60.00 \\
 \textbf{Average/Total} & \textbf{4493.8} & \textbf{100.00} & \textbf{0.543} & -- & \textbf{54.30} \\
 \bottomrule
 \end{tabular}
-\caption{Closed-Loop Driving Scenario Metrics from the CARLA Leaderboard evaluation. The composed score is computed as $\text{score\_route} \times \text{penalty}$.}
+\vspace{1ex}
+
+{\small \textit{*Note: The composed score is computed as $\text{score\_route} \times \text{penalty}$.}}
+\caption{Closed-Loop Driving Scenario Metrics from the CARLA Leaderboard evaluation.}
 \label{tab:driving_metrics}
 \end{table}
 
@@ -909,7 +947,7 @@ To contextualize our pipeline's driving performance, we compare our results agai
 \centering
 \begin{tabular}{lccc}
 \toprule
-\textbf{Model Pipeline} & \textbf{Driving Score (\%)} & \textbf{Route Completion (\%)} & \textbf{Infraction Score} \\
+\textbf{Model Pipeline} & \textbf{Score (\%)} & \textbf{Comp. (\%)} & \textbf{Infraction} \\
 \midrule
 Random Init. & 10.7 & 16.2 & 0.63 \\
 LLaMA & 31.3 & 37.1 & 0.82 \\
@@ -921,12 +959,15 @@ LLaVA-v1.5 & 36.2 & 46.5 & \textbf{0.81} \\
 \textbf{Pylot + YOLOv8s (Ours)} & \textbf{54.3} & \textbf{100.0} & 0.54 \\
 \bottomrule
 \end{tabular}
-\caption{Comparison of Closed-Loop Driving Performance against LangAuto LLM baselines. Our modular pipeline achieves a significantly higher Driving Score and Route Completion, demonstrating superior navigation capability.}
+\vspace{1ex}
+
+{\small \textit{*Note: Our modular pipeline achieves a significantly higher Driving Score and Route Completion, demonstrating superior navigation capability.}}
+\caption{Comparison of Closed-Loop Driving Performance against LangAuto LLM baselines.}
 \label{tab:thesis_comparison}
 \end{table}
 
 \subsection{Pipeline Latency Profiling}
-Profiling data from the CSV trace log (\texttt{leaderboard\_eval.csv}) was aggregated over 3,512,936 processed frames. Table~\ref{tab:latency_profile} summarizes the latency measurements.
+Profiling data from the evaluation trace logs was aggregated over 3,512,936 processed frames. Table~\ref{tab:latency_profile} summarizes the latency measurements.
 
 \begin{table}[h!]
 \centering
@@ -944,62 +985,16 @@ PID Control             & 0.9    & -- \\
 \textbf{End-to-End Pipeline} & \textbf{112.98} & \textbf{1371.71} \\
 \bottomrule
 \end{tabular}
-\caption{Average and peak latency of individual pipeline components measured over 3.5 million frames. The end-to-end latency includes all sensor ingestion and downstream processing.}
+\vspace{1ex}
+
+{\small \textit{*Note: The end-to-end latency includes all sensor ingestion and downstream processing.}}
+\caption{Average and peak latency of individual pipeline components measured over 3.5 million frames.}
 \label{tab:latency_profile}
 \end{table}
 
 The computational bottleneck resides in the raw sensor transmission and planning update passes, whereas the streamlined YOLOv8 detector (17.0~ms) ensures that perception remains well within real-time requirements. The total obstacle detection count over the evaluation was 630,088 individual obstacle instances.
 
-\section{Module-Level Evaluation}
-\label{sec:module_eval}
 
-Beyond the aggregate driving performance, Pylot provides built-in evaluation operators that assess each module individually. These operators compare the output of each component against ground-truth data provided by the CARLA simulator, enabling fine-grained analysis of the perception--planning--control pipeline. Table~\ref{tab:module_eval_summary} summarizes the available evaluation operators.
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{p{3.2cm}p{4.5cm}p{5.5cm}}
-\toprule
-\textbf{Evaluation Operator} & \textbf{Input Requirements} & \textbf{Output Metrics} \\
-\midrule
-\texttt{DetectionEval} & Detected obstacles stream, ground-truth 2D bounding boxes (from perfect detector) & COCO AP/AR at IoU thresholds 0.50, 0.75, 0.50:0.95 across small/medium/large objects \\
-\midrule
-\texttt{TrackingEval} & Tracked obstacles stream, ground-truth obstacles with IDs & MOTChallenge: MOTA, MOTP, IDF1, mostly tracked/lost ratios \\
-\midrule
-\texttt{PredictionEval} & Ego pose, tracking trajectories, predicted trajectories & MSD (Mean Squared Distance), ADE (Average Displacement Error), FDE (Final Displacement Error) \\
-\midrule
-\texttt{ControlEval} & Ego pose, planned waypoints & Crosstrack error (m), Heading error (rad) \\
-\bottomrule
-\end{tabular}
-\caption{Summary of Pylot's built-in module evaluation operators and their respective metrics.}
-\label{tab:module_eval_summary}
-\end{table}
-
-\subsection{Tracking Evaluation}
-The SORT tracker is evaluated against simulator ground-truth obstacles using the MOTChallenge~\cite{motchallenge} benchmark protocol. The \texttt{TrackingEvalOperator} uses the \texttt{motmetrics} library to compute standard multi-object tracking metrics. The evaluation compares tracked obstacle bounding boxes (before location history computation) against ground-truth 2D bounding boxes provided directly by the simulator's actor projection system.
-
-Key metrics computed include:
-\begin{itemize}
-    \item \textbf{MOTA} (Multiple Object Tracking Accuracy): Combines false positives, false negatives, and identity switches into a single accuracy score.
-    \item \textbf{MOTP} (Multiple Object Tracking Precision): Measures the spatial alignment between predicted and ground-truth bounding boxes.
-    \item \textbf{IDF1}: Measures the ratio of correctly identified detections over the average number of ground-truth and computed detections.
-\end{itemize}
-
-\subsection{Prediction Evaluation}
-The linear prediction module is evaluated by comparing predicted future trajectories against ground-truth future positions observed by the simulator. The \texttt{PredictionEvalOperator} computes three displacement metrics in world coordinates:
-\begin{itemize}
-    \item \textbf{ADE} (Average Displacement Error): The mean L2 distance between predicted and ground-truth positions across all future time steps.
-    \item \textbf{FDE} (Final Displacement Error): The L2 distance at the final predicted time step.
-    \item \textbf{MSD} (Mean Squared Distance): The mean squared displacement error, penalizing larger deviations more heavily.
-\end{itemize}
-These metrics are computed both in aggregate and per object class (vehicle, pedestrian).
-
-\subsection{Control Evaluation}
-The PID controller is evaluated by comparing the vehicle's achieved trajectory against the planned waypoint trajectory. The \texttt{ControlEvalOperator} computes:
-\begin{itemize}
-    \item \textbf{Crosstrack Error}: The perpendicular distance between the vehicle's actual position and the nearest point on the reference trajectory. This quantifies lateral deviation from the planned path.
-    \item \textbf{Heading Error}: The angular difference (in radians) between the vehicle's heading and the tangent direction of the reference trajectory at the closest waypoint.
-\end{itemize}
-Both metrics are logged at every simulation time step, enabling temporal analysis of controller stability and responsiveness.
 
 \chapter{Conclusions and Future Works}
 
