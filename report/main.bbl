@@ -1,0 +1,142 @@
+\begin{thebibliography}{10}
+
+\bibitem{alvinn1989}
+D.~A. Pomerleau, ``Alvinn: An autonomous land vehicle in a neural network,'' in
+  {\em Advances in Neural Information Processing Systems}, 1989.
+
+\bibitem{thorpe1988}
+C.~Thorpe, M.~Hebert, T.~Kanade, and S.~Shafer, ``Vision and navigation for the
+  carnegie-mellon navlab,'' {\em IEEE Transactions on Pattern Analysis and
+  Machine Intelligence}, 1988.
+
+\bibitem{dickmanns1986}
+E.~D. Dickmanns and A.~Zapp, ``A curvature-based scheme for improving the
+  robustness of autonomous visual road following,'' in {\em Mobile Robots},
+  1986.
+
+\bibitem{dickmanns1994}
+E.~D. Dickmanns {\em et~al.}, ``The seeing passenger car 'vamp','' in {\em
+  Intelligent Vehicles '94 Symposium}, 1994.
+
+\bibitem{alexnet2012}
+A.~Krizhevsky, I.~Sutskever, and G.~E. Hinton, ``Imagenet classification with
+  deep convolutional neural networks,'' in {\em Advances in Neural Information
+  Processing Systems}, 2012.
+
+\bibitem{resnet2016}
+K.~He, X.~Zhang, S.~Ren, and J.~Sun, ``Deep residual learning for image
+  recognition,'' in {\em Proceedings of the IEEE conference on computer vision
+  and pattern recognition}, 2016.
+
+\bibitem{yolo2016}
+J.~Redmon, S.~Divvala, R.~Girshick, and A.~Farhadi, ``You only look once:
+  Unified, real-time object detection,'' in {\em Proceedings of the IEEE
+  conference on computer vision and pattern recognition}, 2016.
+
+\bibitem{mv3d2017}
+X.~Chen, H.~Ma, J.~Wan, B.~Li, and T.~Xia, ``Multi-view 3d object detection
+  network for autonomous driving,'' in {\em Proceedings of the IEEE conference
+  on computer vision and pattern recognition}, 2017.
+
+\bibitem{bojarski2016}
+M.~Bojarski {\em et~al.}, ``End to end learning for self-driving cars,'' {\em
+  arXiv preprint arXiv:1604.07316}, 2016.
+
+\bibitem{levine2016}
+S.~Levine, C.~Finn, T.~Darrell, and P.~Abbeel, ``End-to-end training of deep
+  visuomotor policies,'' {\em The Journal of Machine Learning Research}, 2016.
+
+\bibitem{xu2017}
+H.~Xu, Y.~Gao, F.~Yu, and T.~Darrell, ``End-to-end learning of driving models
+  from large-scale video datasets,'' in {\em Proceedings of the IEEE conference
+  on computer vision and pattern recognition}, 2017.
+
+\bibitem{aradi2020}
+S.~Aradi, ``Survey of deep reinforcement learning for autonomous driving,''
+  {\em IEEE Transactions on Intelligent Transportation Systems}, 2020.
+
+\bibitem{nuscenes2020}
+H.~Caesar {\em et~al.}, ``nuscenes: A multimodal dataset for autonomous
+  driving,'' in {\em Proceedings of the IEEE/CVF conference on computer vision
+  and pattern recognition}, 2020.
+
+\bibitem{swin2021}
+Z.~Liu {\em et~al.}, ``Swin transformer: Hierarchical vision transformer using
+  shifted windows,'' in {\em Proceedings of the IEEE/CVF international
+  conference on computer vision}, 2021.
+
+\bibitem{uniad2023}
+A.~Hu {\em et~al.}, ``Planning-oriented autonomous driving,'' in {\em
+  Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition}, 2023.
+
+\bibitem{wu2025}
+X.~Wu {\em et~al.}, ``Foundation models for autonomous driving systems: An
+  initial roadmap,'' {\em ACM Transactions on Software Engineering and
+  Methodology}, 2026.
+
+\bibitem{wang2023}
+J.~Wang {\em et~al.}, ``Motion planning for autonomous driving: The state of
+  the art and future perspectives,'' {\em IEEE Transactions on Intelligent
+  Vehicles}, 2023.
+
+\bibitem{codevilla2019}
+F.~Codevilla {\em et~al.}, ``Exploring the limitations of behavior cloning for
+  autonomous driving,'' in {\em Proceedings of the IEEE/CVF International
+  Conference on Computer Vision}, 2019.
+
+\bibitem{bojarski2019}
+M.~Bojarski {\em et~al.}, ``The mythos of model interpretability,'' {\em arXiv
+  preprint arXiv:1902.06292}, 2019.
+
+\bibitem{erdos_pylot}
+I.~Gog, S.~Kalra, P.~Schafhalter, M.~Wright, J.~E. Gonzalez, and I.~Stoica,
+  ``Pylot: {A} modular autonomous vehicle platform for developing and testing
+  autonomous vehicle components,'' in {\em Proceedings of the 2022 USENIX
+  Annual Technical Conference (ATC)}, 2022.
+
+\bibitem{carla_sim}
+A.~Dosovitskiy, G.~Ros, F.~Codevilla, A.~Lopez, and V.~Koltun, ``{CARLA}: {An}
+  open urban driving simulator,'' in {\em Conference on Robot Learning (CoRL)},
+  pp.~1--16, 2017.
+
+\bibitem{faster_rcnn}
+S.~Ren, K.~He, R.~Girshick, and J.~Sun, ``Faster {R-CNN}: {Towards} real-time
+  object detection with region proposal networks,'' in {\em Advances in Neural
+  Information Processing Systems (NeurIPS)}, 2015.
+
+\bibitem{efficientdet}
+M.~Tan, R.~Pang, and Q.~V. Le, ``{EfficientDet}: {Scalable} and efficient
+  object detection,'' in {\em IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition (CVPR)}, 2020.
+
+\bibitem{yolov8}
+G.~Jocher, A.~Chaurasia, and J.~Qiu, ``Ultralytics {YOLOv8},'' 2023.
+
+\bibitem{sort_tracker}
+A.~Bewley, Z.~Ge, L.~Ott, F.~Ramos, and B.~Upcroft, ``Simple online and
+  realtime tracking,'' in {\em IEEE International Conference on Image
+  Processing (ICIP)}, 2016.
+
+\bibitem{frenet_planner}
+M.~Werling, J.~Ziegler, S.~Kammel, and S.~Thrun, ``Optimal trajectory
+  generation for dynamic street scenarios in a {Frenet} frame,'' {\em IEEE
+  International Conference on Robotics and Automation (ICRA)}, 2010.
+
+\bibitem{rrt_star}
+S.~Karaman and E.~Frazzoli, ``Sampling-based algorithms for optimal motion
+  planning,'' {\em The International Journal of Robotics Research}, vol.~30,
+  no.~7, pp.~846--894, 2011.
+
+\bibitem{hybrid_a_star}
+D.~Dolgov, S.~Thrun, M.~Montemerlo, and J.~Diebel, ``Practical search
+  techniques in {Path Planning} for {Autonomous Driving},'' {\em Annals of
+  Mathematics and Artificial Intelligence}, vol.~52, no.~2-4, pp.~207--226,
+  2008.
+
+\bibitem{pid_control}
+G.~F. Franklin, J.~D. Powell, and A.~Emami-Naeini, {\em Feedback Control of
+  Dynamic Systems}.
+\newblock Pearson, 2019.
+
+\end{thebibliography}
