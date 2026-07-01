@@ -3,9 +3,9 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces Timely AP50 metrics at varying speeds and injected latencies for the DynamicObjectCrossing scenario.}}{23}{table.caption.26}%
-\contentsline {table}{\numberline {4.2}{\ignorespaces Comparison of Latency Drift across perception models.}}{24}{table.caption.27}%
-\contentsline {table}{\numberline {4.3}{\ignorespaces Closed-Loop Driving Scenario Metrics from the CARLA Leaderboard evaluation.}}{24}{table.caption.28}%
-\contentsline {table}{\numberline {4.4}{\ignorespaces Comparison of Closed-Loop Driving Performance against LangAuto LLM baselines.}}{25}{table.caption.29}%
-\contentsline {table}{\numberline {4.5}{\ignorespaces Average and peak latency of individual pipeline components measured over 3.5 million frames.}}{25}{table.caption.30}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces Timely AP50 metrics at varying speeds and injected latencies for the DynamicObjectCrossing scenario.}}{23}{table.caption.24}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Comparison of Latency Drift across perception models.}}{24}{table.caption.25}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Closed-Loop Driving Scenario Metrics from the CARLA Leaderboard evaluation.}}{24}{table.caption.26}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Comparison of Closed-Loop Driving Performance against LangAuto LLM baselines.}}{25}{table.caption.27}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Average and peak latency of individual pipeline components measured over 3.5 million frames.}}{25}{table.caption.28}%
 \addvspace {10\p@ }
