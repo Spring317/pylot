@@ -3,8 +3,9 @@
 \contentsline {chapter}{List of Figures}{III}{chapter*.2}%
 \contentsline {chapter}{List of Table}{IV}{chapter*.3}%
 \contentsline {chapter}{List of Abbreviations}{IV}{chapter*.3}%
-\contentsline {chapter}{Acknowledgements}{V}{chapter*.4}%
-\contentsline {chapter}{Abstract}{VI}{chapter*.5}%
+\contentsline {chapter}{Declaration}{V}{chapter*.4}%
+\contentsline {chapter}{Acknowledgements}{VI}{chapter*.5}%
+\contentsline {chapter}{Abstract}{VII}{chapter*.6}%
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Context and motivation}{1}{section.1.1}%
 \contentsline {subsection}{\numberline {1.1.1}Context}{1}{subsection.1.1.1}%
@@ -16,26 +17,26 @@
 \contentsline {chapter}{\numberline {2}Background}{4}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Autonomous Driving Architectures}{4}{section.2.1}%
 \contentsline {subsection}{\numberline {2.1.1}ERDOS Dataflow Engine}{4}{subsection.2.1.1}%
-\contentsline {subsubsection}{Comparison with Traditional Middlewares}{5}{section*.6}%
+\contentsline {subsubsection}{Comparison with Traditional Middlewares}{5}{section*.7}%
 \contentsline {subsection}{\numberline {2.1.2}CARLA Simulator Architecture}{5}{subsection.2.1.2}%
-\contentsline {subsubsection}{Synchronous and Asynchronous Execution}{5}{section*.7}%
-\contentsline {subsubsection}{Sensor Suite and OpenDRIVE Maps}{6}{section*.8}%
+\contentsline {subsubsection}{Synchronous and Asynchronous Execution}{5}{section*.8}%
+\contentsline {subsubsection}{Sensor Suite and OpenDRIVE Maps}{6}{section*.9}%
 \contentsline {section}{\numberline {2.2}Perception Module}{6}{section.2.2}%
 \contentsline {subsection}{\numberline {2.2.1}Faster R-CNN}{6}{subsection.2.2.1}%
 \contentsline {subsection}{\numberline {2.2.2}EfficientDet}{7}{subsection.2.2.2}%
 \contentsline {subsection}{\numberline {2.2.3}YOLOv8}{7}{subsection.2.2.3}%
-\contentsline {subsubsection}{Backbone and Neck Architecture}{7}{section*.9}%
-\contentsline {subsubsection}{Data Augmentation Strategies}{7}{section*.10}%
+\contentsline {subsubsection}{Backbone and Neck Architecture}{7}{section*.10}%
+\contentsline {subsubsection}{Data Augmentation Strategies}{7}{section*.11}%
 \contentsline {section}{\numberline {2.3}Dynamic State Estimation and Motion Modules}{8}{section.2.3}%
 \contentsline {subsection}{\numberline {2.3.1}Obstacle Tracking (SORT)}{8}{subsection.2.3.1}%
 \contentsline {subsection}{\numberline {2.3.2}Obstacle Prediction}{10}{subsection.2.3.2}%
 \contentsline {subsection}{\numberline {2.3.3}Waypoint Planning}{11}{subsection.2.3.3}%
-\contentsline {subsubsection}{Frenet Optimal Trajectory}{12}{section*.14}%
-\contentsline {subsubsection}{RRT* (Rapidly-exploring Random Trees)}{12}{section*.16}%
-\contentsline {subsubsection}{Hybrid A*}{13}{section*.17}%
+\contentsline {subsubsection}{Frenet Optimal Trajectory}{12}{section*.15}%
+\contentsline {subsubsection}{RRT* (Rapidly-exploring Random Trees)}{12}{section*.17}%
+\contentsline {subsubsection}{Hybrid A*}{13}{section*.18}%
 \contentsline {subsection}{\numberline {2.3.4}Vehicle Control (PID)}{13}{subsection.2.3.4}%
-\contentsline {subsubsection}{Lateral PID Controller}{14}{section*.19}%
-\contentsline {subsubsection}{Longitudinal PID Controller}{14}{section*.20}%
+\contentsline {subsubsection}{Lateral PID Controller}{14}{section*.20}%
+\contentsline {subsubsection}{Longitudinal PID Controller}{14}{section*.21}%
 \contentsline {subsection}{\numberline {2.3.5}Model Predictive Control (MPC)}{14}{subsection.2.3.5}%
 \contentsline {section}{\numberline {2.4}Latency-Accuracy Tradeoffs and Timely Accuracy}{15}{section.2.4}%
 \contentsline {chapter}{\numberline {3}Methodology and Modular Integration}{17}{chapter.3}%
