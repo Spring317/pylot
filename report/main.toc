@@ -3,7 +3,8 @@
 \contentsline {chapter}{List of Figures}{III}{chapter*.2}%
 \contentsline {chapter}{List of Table}{IV}{chapter*.3}%
 \contentsline {chapter}{List of Abbreviations}{IV}{chapter*.3}%
-\contentsline {chapter}{Declartion}{VI}{chapter*.5}%
+\contentsline {chapter}{Supervisor's Certificate}{V}{chapter*.4}%
+\contentsline {chapter}{Declaration}{VI}{chapter*.5}%
 \contentsline {chapter}{Acknowledgements}{VII}{chapter*.6}%
 \contentsline {chapter}{Abstract}{VIII}{chapter*.7}%
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
