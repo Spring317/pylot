@@ -1,0 +1,66 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{Content}{II}{chapter*.1}%
+\contentsline {chapter}{List of Figures}{III}{chapter*.2}%
+\contentsline {chapter}{List of Table}{IV}{chapter*.3}%
+\contentsline {chapter}{List of Abbreviations}{IV}{chapter*.3}%
+\contentsline {chapter}{Declartion}{VI}{chapter*.5}%
+\contentsline {chapter}{Acknowledgements}{VII}{chapter*.6}%
+\contentsline {chapter}{Abstract}{VIII}{chapter*.7}%
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Context and motivation}{1}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Context}{1}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}Problem Statement}{2}{subsection.1.1.2}%
+\contentsline {subsection}{\numberline {1.1.3}Motivation}{2}{subsection.1.1.3}%
+\contentsline {section}{\numberline {1.2}Related Work}{2}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Thesis Objective}{2}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Thesis Structure}{3}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Background}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Autonomous Driving Architectures}{4}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}ERDOS Dataflow Engine}{4}{subsection.2.1.1}%
+\contentsline {subsubsection}{Comparison with Traditional Middlewares}{5}{section*.8}%
+\contentsline {subsection}{\numberline {2.1.2}CARLA Simulator Architecture}{5}{subsection.2.1.2}%
+\contentsline {subsubsection}{Synchronous and Asynchronous Execution}{5}{section*.9}%
+\contentsline {subsubsection}{Sensor Suite and OpenDRIVE Maps}{6}{section*.10}%
+\contentsline {section}{\numberline {2.2}Perception Module}{6}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Faster R-CNN}{6}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}EfficientDet}{7}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}YOLOv8}{7}{subsection.2.2.3}%
+\contentsline {subsubsection}{Backbone and Neck Architecture}{7}{section*.11}%
+\contentsline {subsubsection}{Data Augmentation Strategies}{7}{section*.12}%
+\contentsline {section}{\numberline {2.3}Dynamic State Estimation and Motion Modules}{8}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Obstacle Tracking (SORT)}{8}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Obstacle Prediction}{10}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Waypoint Planning}{11}{subsection.2.3.3}%
+\contentsline {subsubsection}{Frenet Optimal Trajectory}{12}{section*.16}%
+\contentsline {subsubsection}{RRT* (Rapidly-exploring Random Trees)}{12}{section*.18}%
+\contentsline {subsubsection}{Hybrid A*}{13}{section*.19}%
+\contentsline {subsection}{\numberline {2.3.4}Vehicle Control (PID)}{13}{subsection.2.3.4}%
+\contentsline {subsubsection}{Lateral PID Controller}{14}{section*.21}%
+\contentsline {subsubsection}{Longitudinal PID Controller}{14}{section*.22}%
+\contentsline {subsection}{\numberline {2.3.5}Model Predictive Control (MPC)}{14}{subsection.2.3.5}%
+\contentsline {section}{\numberline {2.4}Latency-Accuracy Tradeoffs and Timely Accuracy}{15}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Methodology and Modular Integration}{17}{chapter.3}%
+\contentsline {section}{\numberline {3.1}The Pylot Dataflow Graph}{17}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Classical Lane Detection via HSV and Hough Transform}{18}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Color Space Conversion and Thresholding}{18}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Canny Edge Detection}{18}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}The Hough Line Transform}{18}{subsection.3.2.3}%
+\contentsline {section}{\numberline {3.3}Perception Streamlining via YOLOv8}{19}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Dataset Acquisition and Simulation Setup}{19}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Annotation Conversion and Model Training}{20}{subsection.3.3.2}%
+\contentsline {section}{\numberline {3.4}Lane Detection Pipeline}{20}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}HSV Color Thresholding}{21}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Canny Edge Detection}{21}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Hough Transform}{21}{subsection.3.4.3}%
+\contentsline {section}{\numberline {3.5}3D Coordinate Projection and Tracking}{21}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Experimental Evaluation and Results}{22}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Experimental Setup}{22}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Object Detector Benchmarks}{22}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Latency Drift and Timely Accuracy}{22}{subsection.4.2.1}%
+\contentsline {section}{\numberline {4.3}Closed-Loop Driving Performance}{24}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Comparison with LangAuto Benchmark}{25}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Pipeline Latency Profiling}{25}{subsection.4.3.2}%
+\contentsline {chapter}{\numberline {5}Conclusions and Future Works}{27}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Conclusions}{27}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Future Works}{27}{section.5.2}%
+\contentsline {chapter}{Bibliography}{28}{section.5.2}%
